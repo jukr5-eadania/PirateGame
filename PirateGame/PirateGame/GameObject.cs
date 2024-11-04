@@ -16,6 +16,7 @@ namespace PirateGame
         protected Texture2D[] sprites;
         protected Vector2 velocity;
         protected Vector2 position;
+        protected Vector2 origin;
         protected float speed;
         protected float fps; // the animation speed
         private float timeElapsed; // time passed since frame changed
@@ -30,7 +31,8 @@ namespace PirateGame
        
         public void Draw (SpriteBatch spriteBatch)
         {
-
+            origin = new Vector2(sprite.Width / 2, sprite.Height / 2);
+            spriteBatch.Draw(sprite, position, null, Color.White, 0, origin, 1, SpriteEffects.None, 1);
         }
         protected void Move (GameTime gameTime)
         {
