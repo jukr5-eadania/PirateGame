@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace PirateGame
 {
@@ -11,7 +12,7 @@ namespace PirateGame
 
         public Player()
         {
-
+            speed = 100;
         }
 
         public override void LoadContent(ContentManager content)
@@ -29,6 +30,8 @@ namespace PirateGame
 
         public override void Update(GameTime gameTime)
         {
+            HandleInput();
+            Move(gameTime);
             Animation(gameTime);
         }
 
@@ -40,7 +43,35 @@ namespace PirateGame
 
         public void HandleInput()
         {
+            velocity = Vector2.Zero;
 
+            KeyboardState keystate = Keyboard.GetState();
+
+            if (keystate.IsKeyDown(Keys.A))
+            {
+                velocity += new Vector2(-1, 0);
+            }
+
+            if (keystate.IsKeyDown(Keys.D))
+            {
+                velocity += new Vector2(1, 0);
+            }
+
+            if (keystate.IsKeyDown(Keys.Space))
+            {
+                Jump();
+            }
+
+            if (keystate.IsKeyDown(Keys.OemComma))
+            {
+                Attack();
+            }
+
+            if (keystate.IsKeyDown(Keys.OemPeriod))
+            {
+                velocity += new Vector2(1, 0);
+                Shoot();
+            }
         }
         
         public void Jump()
