@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace PirateGame
 {
+    /// <summary>
+    /// "GameObject" is a superclass for all object to inherit from
+    /// </summary>
     abstract class GameObject
     {
         // Field
@@ -23,14 +26,26 @@ namespace PirateGame
         private int currentIndex; // Index of current frame
 
         // Properties
-        public Rectangle collisionBox { get; }
+        public Rectangle collisionBox
+        {
+            get
+            {
+                // note : origin gets defined in "Draw"
+                return new Rectangle((int)position.X - (int)origin.X, (int)position.Y - (int)origin.Y, sprite.Width, sprite.Height);
+            }
+        }
 
         // Methods
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="content"></param>
         public abstract void LoadContent(ContentManager content);
         public abstract void Update(GameTime gameTime);
        
         public void Draw (SpriteBatch spriteBatch)
-        {
+        {       
             origin = new Vector2(sprite.Width / 2, sprite.Height / 2);
             spriteBatch.Draw(sprite, position, null, Color.White, 0, origin, 1, SpriteEffects.None, 1);
         }
