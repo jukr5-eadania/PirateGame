@@ -57,13 +57,16 @@ namespace PirateGame
                 currentIndex = 0;
             }
         }
-        public void OnCollision(GameObject other)
+        public virtual void OnCollision(GameObject other)
         {
 
         }
         public void CheckCollision (GameObject other)
         {
-
+            if(collisionBox.Intersects(other.collisionBox)&& other != this)
+            {
+                OnCollision(other);
+            }
         }
         public void TakeDamage()
         {
