@@ -1,11 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PirateGame
 {
@@ -13,21 +8,28 @@ namespace PirateGame
     {
         private int health;
         private int damage;
-        private Texture2D bulletsprite;
 
-        Player()
+        public Player()
         {
 
         }
 
         public override void LoadContent(ContentManager content)
         {
-            throw new NotImplementedException();
+            sprites = new Texture2D[5];
+            for (int i = 0; i < sprites.Length; i++)
+            {
+                sprites[i] = content.Load<Texture2D>($"Pirate\\Idle\\idle{i}");
+            }
+
+            sprite = sprites[0];
+
+            position = new Vector2(GameWorld.Width / 2, GameWorld.Height / 2);
         }
 
         public override void Update(GameTime gameTime)
         {
-            throw new NotImplementedException();
+            Animation(gameTime);
         }
 
 

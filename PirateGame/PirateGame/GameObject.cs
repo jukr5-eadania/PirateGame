@@ -21,7 +21,7 @@ namespace PirateGame
         protected Vector2 position;
         protected Vector2 origin;
         protected float speed;
-        protected float fps; // the animation speed
+        protected float fps = 10; // the animation speed
         private float timeElapsed; // time passed since frame changed
         private int currentIndex; // Index of current frame
 
