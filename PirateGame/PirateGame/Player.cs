@@ -69,7 +69,6 @@ namespace PirateGame
 
             if (keystate.IsKeyDown(Keys.OemPeriod))
             {
-                velocity += new Vector2(1, 0);
                 Shoot();
             }
         }
