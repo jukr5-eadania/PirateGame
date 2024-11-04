@@ -32,9 +32,30 @@ namespace PirateGame
         {
 
         }
-        protected void Move (GameObject other)
+        protected void Move (GameTime gameTime)
         {
+            // Calculate deltaTime based on the gameTime
+            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
+            //Move the object
+            position += ((velocity * speed) * deltaTime);
+        }
+        protected void Animation (GameTime gameTime)
+        {
+            //add time that has passed since last update
+            timeElapsed += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            // calculate the currrnet index
+            currentIndex = (int)(timeElapsed * fps);
+            sprite = sprites[currentIndex];
+
+            //check if the animation needs to restart
+            if(currentIndex >= sprites.Length - 1)
+            {
+                //reset the animation
+                timeElapsed = 0;
+                currentIndex = 0;
+            }
         }
         public void OnCollision(GameObject other)
         {
