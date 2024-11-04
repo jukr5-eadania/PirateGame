@@ -18,7 +18,6 @@ namespace PirateGame
         
         private int health;
 
-
         // Properties
 
         // Methods
@@ -30,19 +29,33 @@ namespace PirateGame
             {
                 sprites[i] = content.Load<Texture2D>($"Skeleton_White_{i}");
             }
-            //set a default sprite
+            // set a default sprite
             sprite = sprites[0];
         }
+
+        /// <summary>
+        /// When colliding with player
+        /// </summary>
+        /// <param name="other"></param>
         public void OnCollision (GameObject other)
         {
-
+            
         }
+
+        /// <summary>
+        /// When player or bullet hits enemy
+        /// </summary>
         public void TakeDamage()
         {
 
         }
 
         public void Draw(SpriteBatch spriteBatch)
+        {
+
+        }
+
+        public void Movement()
         {
 
         }
