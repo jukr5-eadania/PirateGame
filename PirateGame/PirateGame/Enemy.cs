@@ -14,9 +14,9 @@ namespace PirateGame
     /// </summary>
     abstract class Enemy : GameObject
     {
-        // Field
-        
+        // Field        
         private int health;
+        private Dictionary<string, Texture2D> sprites =
 
         // Properties
 
@@ -24,13 +24,13 @@ namespace PirateGame
         public override void LoadContent(ContentManager content)
         {
             // make the idle animation
-            sprites = new Texture2D[7];
+            /*sprites = new Texture2D[7];
             for(int i = 0; i < sprites.Length; i++)
             {
                 sprites[i] = content.Load<Texture2D>($"Skeleton_White_{i}");
             }
             // set a default sprite
-            sprite = sprites[0];
+            sprite = sprites[0];*/
         }
 
         /// <summary>
@@ -55,14 +55,14 @@ namespace PirateGame
 
         }
 
-        public void Movement()
+        public void Patrol()
         {
 
         }
 
         public override void Update(GameTime gameTime)
         {
-            throw new NotImplementedException();
+            
         }
 
 
