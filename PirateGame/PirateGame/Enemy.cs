@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace PirateGame
 {
+
     /// <summary>
     /// "Enemy" is a sup-class from GameObject.
     /// </summary>
@@ -50,20 +51,15 @@ namespace PirateGame
         /// When colliding with player
         /// </summary>
         /// <param name="other"></param>
-        public void OnCollision (GameObject other)
+        public override void OnCollision(GameObject other)
         {
-            
+
         }
 
         /// <summary>
         /// When player or bullet hits enemy
         /// </summary>
-        public void TakeDamage()
-        {
-
-        }
-
-        public void Draw(SpriteBatch spriteBatch)
+        public override void TakeDamage()
         {
 
         }
@@ -75,9 +71,8 @@ namespace PirateGame
 
         public override void Update(GameTime gameTime)
         {
-            
+
         }
 
-
-    }
+    }  
 }
