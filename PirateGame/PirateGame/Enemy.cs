@@ -16,13 +16,26 @@ namespace PirateGame
     {
         // Field        
         private int health;
-        private Dictionary<string, Texture2D> sprites =
+        private Dictionary<string, Texture2D> sprites;
 
         // Properties
 
         // Methods
         public override void LoadContent(ContentManager content)
         {
+            sprites = new Dictionary<string, Texture2D>();
+            // Skeleton sprites for the idle animation added to the dictionary under the same keyword
+            sprites.Add("Idle", content.Load<Texture2D>("Skeleton_White_0"));
+            sprites.Add("Idle", content.Load<Texture2D>("Skeleton_White_1"));
+            sprites.Add("Idle", content.Load<Texture2D>("Skeleton_White_2"));
+            sprites.Add("Idle", content.Load<Texture2D>("Skeleton_White_3"));
+            sprites.Add("Idle", content.Load<Texture2D>("Skeleton_White_4"));
+            sprites.Add("Idle", content.Load<Texture2D>("Skeleton_White_5"));
+            sprites.Add("Idle", content.Load<Texture2D>("Skeleton_White_6"));
+            sprites.Add("Idle", content.Load<Texture2D>("Skeleton_White_7"));
+
+
+
             // make the idle animation
             /*sprites = new Texture2D[7];
             for(int i = 0; i < sprites.Length; i++)
