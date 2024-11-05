@@ -114,7 +114,7 @@ namespace PirateGame
         /// "TakeDamage" is called when an object with health
         /// collied with somthing that is suppose to damage it.
         /// </summary>
-        public void TakeDamage()
+        public virtual void TakeDamage()
         {
 
         }

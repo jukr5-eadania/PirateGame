@@ -24,7 +24,7 @@ namespace PirateGame
             }
 
             sprite = sprites[0];
-
+            
             position = new Vector2(GameWorld.Width / 2, GameWorld.Height / 2);
         }
 
@@ -46,7 +46,7 @@ namespace PirateGame
             velocity = Vector2.Zero;
 
             KeyboardState keystate = Keyboard.GetState();
-
+            
             if (keystate.IsKeyDown(Keys.A))
             {
                 velocity += new Vector2(-1, 0);
@@ -72,7 +72,7 @@ namespace PirateGame
                 Shoot();
             }
         }
-        
+
         public void Jump()
         {
 
