@@ -53,6 +53,7 @@ namespace PirateGame
             {
                 gameObject.Update(gameTime);
             }
+                    
 
             base.Update(gameTime);
         }

@@ -28,6 +28,7 @@ namespace PirateGame
             fps = 12;
             position = new Vector2(GameWorld.Width / 2, GameWorld.Height / 2);
             scale = 2;
+            
         }
 
         public override void LoadContent(ContentManager content)
@@ -64,12 +65,21 @@ namespace PirateGame
 
         public void Patrol()
         {
+            this.speed = 100;
+            this.velocity = new Vector2(1, 0);
 
+            if (velocity.X >=5)// changing dierection does not work !!!
+            {
+                velocity = new Vector2(-velocity.X, velocity.Y);
+            }
+            
         }
 
         public override void Update(GameTime gameTime)
         {
             Animation(gameTime);
+            Patrol();
+            Move(gameTime);
         }
 
     }  
