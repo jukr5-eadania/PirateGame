@@ -24,6 +24,7 @@ namespace PirateGame
         protected float fps; // the animation speed
         private float timeElapsed; // time passed since frame changed
         private int currentIndex; // Index of current frame
+        protected float scale = 1;
 
         // Properties
         public Rectangle collisionBox
@@ -47,7 +48,7 @@ namespace PirateGame
         public void Draw (SpriteBatch spriteBatch)
         {       
             origin = new Vector2(sprite.Width / 2, sprite.Height / 2);
-            spriteBatch.Draw(sprite, position, null, Color.White, 0, origin, 1, SpriteEffects.None, 1);
+            spriteBatch.Draw(sprite, position, null, Color.White, 0, origin, scale, SpriteEffects.None, 1);
         }
 
         /// <summary>

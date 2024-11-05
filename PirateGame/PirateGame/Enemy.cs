@@ -13,38 +13,36 @@ namespace PirateGame
     /// <summary>
     /// "Enemy" is a sup-class from GameObject.
     /// </summary>
-    abstract class Enemy : GameObject
+    internal class Enemy : GameObject
     {
         // Field        
-        private int health;
-        private Dictionary<string, Texture2D> sprites;
+        private int health;        
+        private Dictionary<string, Texture2D[]> spritesAnimation = new Dictionary<string, Texture2D[]>();
 
         // Properties
 
         // Methods
+        public Enemy()
+        {
+            health = 50;
+            fps = 12;
+            position = new Vector2(GameWorld.Width / 2, GameWorld.Height / 2);
+            scale = 2;
+        }
+
         public override void LoadContent(ContentManager content)
         {
-            sprites = new Dictionary<string, Texture2D>();
-            // Skeleton sprites for the idle animation added to the dictionary under the same keyword
-            sprites.Add("Idle", content.Load<Texture2D>("Skeleton_White_0"));
-            sprites.Add("Idle", content.Load<Texture2D>("Skeleton_White_1"));
-            sprites.Add("Idle", content.Load<Texture2D>("Skeleton_White_2"));
-            sprites.Add("Idle", content.Load<Texture2D>("Skeleton_White_3"));
-            sprites.Add("Idle", content.Load<Texture2D>("Skeleton_White_4"));
-            sprites.Add("Idle", content.Load<Texture2D>("Skeleton_White_5"));
-            sprites.Add("Idle", content.Load<Texture2D>("Skeleton_White_6"));
-            sprites.Add("Idle", content.Load<Texture2D>("Skeleton_White_7"));
-
-
-
+                        
             // make the idle animation
-            /*sprites = new Texture2D[7];
+            sprites = new Texture2D[8];
             for(int i = 0; i < sprites.Length; i++)
             {
-                sprites[i] = content.Load<Texture2D>($"Skeleton_White_{i}");
+                sprites[i] = content.Load<Texture2D>($"Skeleton_White/Idle/Skeleton_White_{i}");
             }
             // set a default sprite
-            sprite = sprites[0];*/
+            sprite = sprites[0];
+
+           
         }
 
         /// <summary>
@@ -71,7 +69,7 @@ namespace PirateGame
 
         public override void Update(GameTime gameTime)
         {
-
+            Animation(gameTime);
         }
 
     }  

@@ -17,8 +17,8 @@ namespace PirateGame
         {
             _graphics = new GraphicsDeviceManager(this);
             _graphics.HardwareModeSwitch = false;
-            Window.IsBorderless = true;
-            _graphics.IsFullScreen = true;
+            Window.IsBorderless = false;
+            _graphics.IsFullScreen = false;
             _graphics.PreferredBackBufferHeight = 1080;
             _graphics.PreferredBackBufferWidth = 1920;
             Content.RootDirectory = "Content";
@@ -29,6 +29,8 @@ namespace PirateGame
         {
             GameWorld.Height = _graphics.PreferredBackBufferHeight;
             GameWorld.Width = _graphics.PreferredBackBufferWidth;
+            
+            gameObjects.Add(new Enemy());
             base.Initialize();
         }
 
