@@ -17,9 +17,11 @@ namespace PirateGame
         protected Vector2 origin;
         protected float speed;
         private Animation currentAnimation;
+        protected SpriteEffects spriteEffects = SpriteEffects.None;
         protected Dictionary<string, Animation> animations = new Dictionary<string, Animation>();
-        private float timeElapsed; // time passed since frame changed
         private int currentIndex; // Index of current frame
+        protected bool LoopAnimation = true;
+        protected float timeElapsed; // time passed since frame changed
 
         // Properties
         public Rectangle collisionBox
@@ -43,7 +45,7 @@ namespace PirateGame
         public void Draw (SpriteBatch spriteBatch)
         {       
             origin = new Vector2(sprite.Width / 2, sprite.Height / 2);
-            spriteBatch.Draw(sprite, position, null, Color.White, 0, origin, 1, SpriteEffects.None, 1);
+            spriteBatch.Draw(sprite, position, null, Color.White, 0, origin, 1, spriteEffects, 1);
         }
 
         /// <summary>
@@ -74,9 +76,16 @@ namespace PirateGame
             currentIndex = (int)(timeElapsed * currentAnimation.FPS);
             
             //check if the animation needs to restart
-            if(currentIndex >= currentAnimation.Sprites.Length - 1)
+            if(currentIndex >= currentAnimation.Sprites.Length - 1 && LoopAnimation)
             {
                 //reset the animation
+                timeElapsed = 0;
+                currentIndex = 0;
+            }
+            else if (currentIndex >= currentAnimation.Sprites.Length - 1 && !LoopAnimation)
+            {
+                PlayAnimation("pirate_idle");
+                LoopAnimation = true;
                 timeElapsed = 0;
                 currentIndex = 0;
             }

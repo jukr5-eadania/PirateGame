@@ -9,8 +9,8 @@ namespace PirateGame
     {
         private int health;
         private int damage;
-        private float gravity = 10;
         private bool onGround = true;
+        private int combo;
 
         public Player()
         {
@@ -62,7 +62,14 @@ namespace PirateGame
             AddAnimation(new Animation(death, "pirate_death", 10));
 
             //Loading fall sprite
-            content.Load<Texture2D>("Pirate/Fall/fall");
+            Texture2D[] fall = new Texture2D[1];
+
+            for (int i = 0; i < fall.Length; i++)
+            {
+                fall[i] = content.Load<Texture2D>("Pirate/Fall/fall");
+            }
+
+            AddAnimation(new Animation(fall, "pirate_fall", 10));
 
             //Loading gun_in sprites
             Texture2D[] gun_in = new Texture2D[5];
@@ -182,18 +189,7 @@ namespace PirateGame
             HandleInput();
             Move(gameTime);
             Animation(gameTime);
-
-            if (velocity == new Vector2(0, 0))
-            {
-                PlayAnimation("pirate_idle");
-            }
-
-            if (onGround == false)
-            {
-                Gravity();
-            }
         }
-
 
         public override void OnCollision(GameObject other)
         {
@@ -209,15 +205,18 @@ namespace PirateGame
             if (keystate.IsKeyDown(Keys.A))
             {
                 velocity += new Vector2(-1, 0);
+                spriteEffects = SpriteEffects.FlipHorizontally;
                 PlayAnimation("pirate_run");
             }
 
             if (keystate.IsKeyDown(Keys.D))
             {
                 velocity += new Vector2(1, 0);
+                spriteEffects = SpriteEffects.None;
+                PlayAnimation("pirate_run");
             }
 
-            if (keystate.IsKeyDown(Keys.Space))
+            if (keystate.IsKeyDown(Keys.Space) && onGround)
             {
                 Jump();
             }
@@ -231,27 +230,35 @@ namespace PirateGame
             {
                 Shoot();
             }
+
+            if (!onGround)
+            {
+                PlayAnimation("pirate_fall");
+                velocity += new Vector2(0, 1);
+            }
         }
 
         public void Jump()
         {
+            PlayAnimation("pirate_jump");
             velocity += new Vector2(0, -1);
             onGround = false;
         }
 
         public void Attack()
         {
-
+            combo++;
+            LoopAnimation = false;
+            PlayAnimation("pirate_atk1");
+            if (combo == 1)
+            {
+                PlayAnimation("pirate_atk2");
+            }
         }
 
         public void Shoot()
         {
 
-        }
-
-        public void Gravity()
-        {
-            velocity.Y += gravity;
         }
     }
 }
