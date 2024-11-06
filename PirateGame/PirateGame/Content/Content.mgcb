@@ -85,7 +85,7 @@
 /processorParam:TextureFormat=Color
 /build:Pirate/Atk1/atk5.png
 
-#begin Pirate/Atk2/akt0.png
+#begin Pirate/Atk2/atk0.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -95,9 +95,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Pirate/Atk2/akt0.png
+/build:Pirate/Atk2/atk0.png
 
-#begin Pirate/Atk2/akt1.png
+#begin Pirate/Atk2/atk1.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -107,9 +107,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Pirate/Atk2/akt1.png
+/build:Pirate/Atk2/atk1.png
 
-#begin Pirate/Atk2/akt2.png
+#begin Pirate/Atk2/atk2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -119,9 +119,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Pirate/Atk2/akt2.png
+/build:Pirate/Atk2/atk2.png
 
-#begin Pirate/Atk2/akt3.png
+#begin Pirate/Atk2/atk3.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -131,9 +131,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Pirate/Atk2/akt3.png
+/build:Pirate/Atk2/atk3.png
 
-#begin Pirate/Atk2/akt4.png
+#begin Pirate/Atk2/atk4.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -143,9 +143,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Pirate/Atk2/akt4.png
+/build:Pirate/Atk2/atk4.png
 
-#begin Pirate/Atk2/akt5.png
+#begin Pirate/Atk2/atk5.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -155,7 +155,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Pirate/Atk2/akt5.png
+/build:Pirate/Atk2/atk5.png
 
 #begin Pirate/Atk3/atk0.png
 /importer:TextureImporter

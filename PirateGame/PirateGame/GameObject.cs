@@ -84,6 +84,10 @@ namespace PirateGame
             sprite = currentAnimation.Sprites[currentIndex];
         }
 
+        /// <summary>
+        /// Plays an animation and makes sure the animation doesn't create an array overflow
+        /// </summary>
+        /// <param name="animationName">The name of the animation that is about to be played</param>
         public void PlayAnimation(string animationName)
         {
             if (animationName != currentAnimation.Name)
@@ -94,6 +98,10 @@ namespace PirateGame
             }
         }
 
+        /// <summary>
+        /// Adds animations to the animation dictionary
+        /// </summary>
+        /// <param name="animation">Takes an animation from the Animation class</param>
         public void AddAnimation(Animation animation)
         {
             animations.Add(animation.Name, animation);

@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System.Collections.Generic;
 
 namespace PirateGame
 {
@@ -21,6 +20,42 @@ namespace PirateGame
         public override void LoadContent(ContentManager content)
         {
             position = new Vector2(GameWorld.Width / 2, GameWorld.Height / 2);
+
+            Texture2D[] atk1 = new Texture2D[6];
+
+            for (int i = 0; i < atk1.Length; i++)
+            {
+                atk1[i] = content.Load<Texture2D>($"Pirate/Atk1/atk{i}");
+            }
+
+            AddAnimation(new Animation(atk1, "atk1", 10));
+
+            Texture2D[] atk2 = new Texture2D[6];
+
+            for (int i = 0; i < atk2.Length; i++)
+            {
+                atk2[i] = content.Load<Texture2D>($"Pirate/Atk2/atk{i}");
+            }
+
+            AddAnimation(new Animation(atk2, "atk2", 10));
+
+            Texture2D[] atk3 = new Texture2D[6];
+
+            for (int i = 0; i < atk3.Length; i++)
+            {
+                atk3[i] = content.Load<Texture2D>($"Pirate/Atk3/atk{i}");
+            }
+
+            AddAnimation(new Animation(atk3, "atk3", 10));
+
+            Texture2D[] death = new Texture2D[4];
+
+            for (int i = 0; i < death.Length; i++)
+            {
+                death[i] = content.Load<Texture2D>($"Pirate/Death/death{i}");
+            }
+
+            AddAnimation(new Animation(atk3, "atk3", 10));
 
             Texture2D[] idle = new Texture2D[5];
 
