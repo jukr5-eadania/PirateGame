@@ -20,6 +20,7 @@ namespace PirateGame
         private bool goLeft = true; // For when the enemy needs to go left
         private bool pause = true; // For when the enemy needs to pause
         private float timeElaps;
+        private Rectangle attackBox;
 
         // Properties
 
@@ -67,16 +68,18 @@ namespace PirateGame
             }
 
             //creating the animation in the AddAnimation method in GameObject (class)
+            //witch then adds them to the animation list
             AddAnimation(new Animation(idle, "skeleton_idle", 12));
             AddAnimation(new Animation(walk, "skeleton_walk", 12));
             AddAnimation(new Animation(attack, "skeleton_attack", 12));
             AddAnimation(new Animation(hurt, "skeleton_hurt", 12));
             AddAnimation(new Animation(die, "skeleton_die", 12));
-                       
+
+            attackBox = new Rectangle();
         }
 
         /// <summary>
-        /// When colliding with player
+        /// When player collides with the enemy's attackBox the enemy will attack
         /// </summary>
         /// <param name="other"></param>
         public override void OnCollision(GameObject other)
@@ -85,12 +88,13 @@ namespace PirateGame
         }
 
         /// <summary>
-        /// When player or bullet hits enemy
+        /// When player hits enemy
         /// </summary>
         public override void TakeDamage()
         {
 
         }
+
         /// <summary>
         /// The enemy patrols a given path back and forth between two waypoints
         /// </summary>
@@ -124,6 +128,7 @@ namespace PirateGame
                 {
                     position.X -= speed; // goes left
                     PlayAnimation("skeleton_walk"); // runs the walk animation
+                    spriteEffects = SpriteEffects.FlipHorizontally;
 
                     // When the enemy hits wp1 it will set goLeft to false so it now can 
                     // go right. Its new position.X will be set to wp1 as a precaution.
@@ -142,6 +147,7 @@ namespace PirateGame
 
                     position.X += speed; // goes right
                     PlayAnimation("skeleton_walk"); // run the walk animation
+                    spriteEffects = SpriteEffects.None;
 
                     //Basically the same as in the goLeft part, but goLeft gets set to true,
                     // position.X is set to wp2 and once more pause will be set to true in order to 
