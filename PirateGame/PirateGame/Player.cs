@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
 namespace PirateGame
 {
@@ -9,6 +10,8 @@ namespace PirateGame
     {
         private int health;
         private int damage;
+        private float gravity = 10;
+        private bool onGround = true;
 
         public Player()
         {
@@ -17,15 +20,27 @@ namespace PirateGame
 
         public override void LoadContent(ContentManager content)
         {
-            sprites = new Texture2D[5];
-            for (int i = 0; i < sprites.Length; i++)
+            position = new Vector2(GameWorld.Width / 2, GameWorld.Height / 2);
+
+            Texture2D[] idle = new Texture2D[5];
+
+            for (int i = 0; i < idle.Length; i++)
             {
-                sprites[i] = content.Load<Texture2D>($"Pirate\\Idle\\idle{i}");
+                idle[i] = content.Load<Texture2D>($"Pirate/Idle/idle{i}");
             }
 
-            sprite = sprites[0];
-            
-            position = new Vector2(GameWorld.Width / 2, GameWorld.Height / 2);
+            AddAnimation(new Animation(idle, "idle", 10));
+
+            Texture2D[] run = new Texture2D[6];
+
+            for (int i = 0; i < run.Length; i++)
+            {
+                run[i] = content.Load<Texture2D>($"Pirate/Run/run{i}");
+            }
+
+            AddAnimation(new Animation(run, "run", 10));
+
+            PlayAnimation("idle");
         }
 
         public override void Update(GameTime gameTime)
@@ -33,6 +48,16 @@ namespace PirateGame
             HandleInput();
             Move(gameTime);
             Animation(gameTime);
+
+            if (velocity == new Vector2(0, 0))
+            {
+                PlayAnimation("idle");
+            }
+
+            if (onGround == false)
+            {
+                Gravity();
+            }
         }
 
 
@@ -50,6 +75,7 @@ namespace PirateGame
             if (keystate.IsKeyDown(Keys.A))
             {
                 velocity += new Vector2(-1, 0);
+                PlayAnimation("run");
             }
 
             if (keystate.IsKeyDown(Keys.D))
@@ -75,7 +101,8 @@ namespace PirateGame
 
         public void Jump()
         {
-
+            velocity += new Vector2(0, -1);
+            onGround = false;
         }
 
         public void Attack()
@@ -86,6 +113,11 @@ namespace PirateGame
         public void Shoot()
         {
 
+        }
+
+        public void Gravity()
+        {
+            velocity.Y += gravity;
         }
     }
 }
