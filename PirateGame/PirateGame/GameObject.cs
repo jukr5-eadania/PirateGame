@@ -1,11 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PirateGame
 {
@@ -16,12 +12,12 @@ namespace PirateGame
     {
         // Field
         protected Texture2D sprite;
-        protected Texture2D[] sprites;
         protected Vector2 velocity;
         protected Vector2 position;
         protected Vector2 origin;
         protected float speed;
-        protected float fps; // the animation speed
+        private Animation currentAnimation;
+        protected Dictionary<string, Animation> animations = new Dictionary<string, Animation>();
         private float timeElapsed; // time passed since frame changed
         private int currentIndex; // Index of current frame
         protected float scale = 1;
@@ -76,15 +72,36 @@ namespace PirateGame
             timeElapsed += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             // calculate the currrnet index
-            currentIndex = (int)(timeElapsed * fps);
-            sprite = sprites[currentIndex];
-
+            currentIndex = (int)(timeElapsed * currentAnimation.FPS);
+            
             //check if the animation needs to restart
-            if(currentIndex >= sprites.Length - 1)
+            if(currentIndex >= currentAnimation.Sprites.Length - 1)
             {
                 //reset the animation
                 timeElapsed = 0;
                 currentIndex = 0;
+            }
+
+            sprite = currentAnimation.Sprites[currentIndex];
+        }
+
+        public void PlayAnimation(string animationName)
+        {
+            if (animationName != currentAnimation.Name)
+            {
+                currentAnimation = animations[animationName];
+                timeElapsed = 0;
+                currentIndex = 0;
+            }
+        }
+
+        public void AddAnimation(Animation animation)
+        {
+            animations.Add(animation.Name, animation);
+
+            if (currentAnimation == null)
+            {
+                currentAnimation = animation;
             }
         }
 

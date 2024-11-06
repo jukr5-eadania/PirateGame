@@ -29,8 +29,9 @@ namespace PirateGame
         {
             GameWorld.Height = _graphics.PreferredBackBufferHeight;
             GameWorld.Width = _graphics.PreferredBackBufferWidth;
-            
+                        
             gameObjects.Add(new Enemy());
+
             base.Initialize();
         }
 
