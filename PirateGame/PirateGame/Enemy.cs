@@ -65,15 +65,20 @@ namespace PirateGame
 
         public void Patrol()
         {
-            this.speed = 100;
-            this.velocity = new Vector2(1, 0);
+            this.speed = 5;
+                                
 
-            if (velocity.X >=5)// changing dierection does not work !!!
-            {
-                velocity = new Vector2(-velocity.X, velocity.Y);
-            }
-            
+           if (position.X <= 400) //as long as position.x is less then 400: go right
+           {
+                velocity += new Vector2(+1, 0);
+           }
+           if (position.X >= 650) 
+           {
+                velocity += new Vector2(-1, 0);
+           }
+
         }
+                
 
         public override void Update(GameTime gameTime)
         {
