@@ -16,8 +16,7 @@ namespace PirateGame
     internal class Enemy : GameObject
     {
         // Field        
-        private int health;        
-        private Dictionary<string, Texture2D[]> spritesAnimation = new Dictionary<string, Texture2D[]>();
+        private int health;       
         private bool goLeft = true;
         private bool pause = true;
         private float timeElaps;
@@ -27,8 +26,7 @@ namespace PirateGame
         // Methods
         public Enemy()
         {
-            health = 50;
-            fps = 12;
+            health = 50;            
             position = new Vector2(GameWorld.Width / 2, GameWorld.Height / 2);
             scale = 2;
             
@@ -37,14 +35,15 @@ namespace PirateGame
         public override void LoadContent(ContentManager content)
         {
                         
-            // make the idle animation
-            sprites = new Texture2D[8];
-            for(int i = 0; i < sprites.Length; i++)
+            
+            Texture2D[] idle = new Texture2D[8];
+            for(int i = 0; i < idle.Length; i++)
             {
-                sprites[i] = content.Load<Texture2D>($"Skeleton_White/Idle/Skeleton_White_{i}");
+                idle[i] = content.Load<Texture2D>($"Skeleton_White/Idle/Skeleton_White_{i}");
             }
-            // set a default sprite
-            sprite = sprites[0];
+
+            AddAnimation(new Animation(idle, "skeleton_idle", 12));
+
 
            
         }
@@ -89,7 +88,7 @@ namespace PirateGame
                 if (goLeft)
                 {
                     position.X -= speed;
-                    if (position.X <= 600) // when hitting the max point (650) turn around and go left
+                    if (position.X <= 600) // when hitting the max point (600) turn around and go left
                     {
                         goLeft = false;
                         position.X = 600;
@@ -100,7 +99,7 @@ namespace PirateGame
                 else
                 {
                     position.X += speed;
-                    if (position.X >= 800) // when hitting the low(minimum) point (600) turn around and go right 
+                    if (position.X >= 800) // when hitting the low(minimum) point (800) turn around and go right 
                     {
                         goLeft = true;
                         position.X = 800;
