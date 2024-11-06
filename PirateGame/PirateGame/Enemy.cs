@@ -18,6 +18,9 @@ namespace PirateGame
         // Field        
         private int health;        
         private Dictionary<string, Texture2D[]> spritesAnimation = new Dictionary<string, Texture2D[]>();
+        private bool goLeft = true;
+        private bool pause = true;
+        private float timeElaps;
 
         // Properties
 
@@ -62,28 +65,59 @@ namespace PirateGame
         {
 
         }
-
-        public void Patrol()
+        /// <summary>
+        /// The enemy patrols a given path back and forth
+        /// </summary>
+        public void Patrol(GameTime gameTime)
         {
-            this.speed = 5;
-                                
 
-           if (position.X <= 400) //as long as position.x is less then 400: go right
-           {
-                velocity += new Vector2(+1, 0);
-           }
-           if (position.X >= 650) 
-           {
-                velocity += new Vector2(-1, 0);
-           }
+            this.speed = 4;
 
-        }
-                
+            if (pause == true)
+            {
+
+                timeElaps += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                if (timeElaps >= 1)
+                {
+                    pause = false;
+                    timeElaps = 0;
+                }
+            }
+            if (pause == false)
+            {
+                if (goLeft)
+                {
+                    position.X -= speed;
+                    if (position.X <= 600) // when hitting the max point (650) turn around and go left
+                    {
+                        goLeft = false;
+                        position.X = 600;
+                        pause = true;
+                    }
+
+                }
+                else
+                {
+                    position.X += speed;
+                    if (position.X >= 800) // when hitting the low(minimum) point (600) turn around and go right 
+                    {
+                        goLeft = true;
+                        position.X = 800;
+                        pause = true;
+                    }
+
+                }
+
+
+
+            }
+        }     
 
         public override void Update(GameTime gameTime)
         {
             Animation(gameTime);
-            Patrol();
+            Patrol(gameTime);
             Move(gameTime);
         }
 
