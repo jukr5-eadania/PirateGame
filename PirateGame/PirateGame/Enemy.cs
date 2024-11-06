@@ -17,8 +17,8 @@ namespace PirateGame
     {
         // Field        
         private int health;       
-        private bool goLeft = true;
-        private bool pause = true;
+        private bool goLeft = true; // For when the enemy needs to go left
+        private bool pause = true; // For when the enemy needs to pause
         private float timeElaps;
 
         // Properties
@@ -36,16 +36,43 @@ namespace PirateGame
         {
                         
             
-            Texture2D[] idle = new Texture2D[8];
+            Texture2D[] idle = new Texture2D[8]; // loading the animation for idle
             for(int i = 0; i < idle.Length; i++)
             {
                 idle[i] = content.Load<Texture2D>($"Skeleton_White/Idle/Skeleton_White_{i}");
             }
 
+            Texture2D[] walk = new Texture2D[10]; // loading the animation for walk
+            for (int i =0; i < walk.Length; i++)
+            {
+                walk[i] = content.Load<Texture2D>($"Skeleton_White/Walk/Skeleton_Walk_0{i}");
+            }
+
+            Texture2D[] attack = new Texture2D[10];// loading the animation for attack
+            for (int i = 0; i < attack.Length; i++)
+            {
+                attack[i] = content.Load<Texture2D>($"Skeleton_White/Attack/Skeleton_Attack0{i}");
+            }
+            
+            Texture2D[] hurt = new Texture2D[5];// loading the animation for hurt
+            for (int i = 0; i < hurt.Length; i++)
+            {
+                hurt[i] = content.Load<Texture2D>($"Skeleton_White/Hurt/Skeleton_Hurt_{i}");
+            }
+
+            Texture2D[] die = new Texture2D[13];// loading the animation for die
+            for (int i = 0; i < die.Length; i++)
+            {
+                die[i] = content.Load<Texture2D>($"Skeleton_White/Die/Skeleton_Die_{i}");
+            }
+
+            //creating the animation in the AddAnimation method in GameObject (class)
             AddAnimation(new Animation(idle, "skeleton_idle", 12));
-
-
-           
+            AddAnimation(new Animation(walk, "skeleton_walk", 12));
+            AddAnimation(new Animation(attack, "skeleton_attack", 12));
+            AddAnimation(new Animation(hurt, "skeleton_hurt", 12));
+            AddAnimation(new Animation(die, "skeleton_die", 12));
+                       
         }
 
         /// <summary>
@@ -65,50 +92,69 @@ namespace PirateGame
 
         }
         /// <summary>
-        /// The enemy patrols a given path back and forth
+        /// The enemy patrols a given path back and forth between two waypoints
         /// </summary>
         public void Patrol(GameTime gameTime)
         {
 
             this.speed = 4;
+            int wp1 = 600; // wp1 is the point towards the left
+            int wp2 = 800; // wp2 is the point towards the right
 
-            if (pause == true)
+            // The enemy pause for 1sec before contenuing to walk. 
+            // This is done by checking if enemy pauses (if pause is true) 
+            if (pause == true) 
             {
-
+                PlayAnimation("skeleton_idle");
                 timeElaps += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
                 if (timeElaps >= 1)
-                {
+                {                    
                     pause = false;
                     timeElaps = 0;
                 }
             }
+
+            // After having paused pause will now be false in order to let it walk.
+            // When enemy has reached its waypoint it will pause again (pause set to true)
             if (pause == false)
             {
+                // When the enemy walks left goLeft will be set to true
                 if (goLeft)
                 {
-                    position.X -= speed;
-                    if (position.X <= 600) // when hitting the max point (600) turn around and go left
+                    position.X -= speed; // goes left
+                    PlayAnimation("skeleton_walk"); // runs the walk animation
+
+                    // When the enemy hits wp1 it will set goLeft to false so it now can 
+                    // go right. Its new position.X will be set to wp1 as a precaution.
+                    // Finally we set pause to true so it will stand stil for 1sec before continuing
+                    if (position.X <= wp1) 
                     {
+                        
                         goLeft = false;
-                        position.X = 600;
+                        position.X = wp1;
                         pause = true;
                     }
 
                 }
-                else
+                else // Here the enemy goes right after having gone left
                 {
-                    position.X += speed;
-                    if (position.X >= 800) // when hitting the low(minimum) point (800) turn around and go right 
+
+                    position.X += speed; // goes right
+                    PlayAnimation("skeleton_walk"); // run the walk animation
+
+                    //Basically the same as in the goLeft part, but goLeft gets set to true,
+                    // position.X is set to wp2 and once more pause will be set to true in order to 
+                    // pause the enemy before continuing
+                    if (position.X >= wp2) 
                     {
+                        
                         goLeft = true;
-                        position.X = 800;
+                        position.X = wp2;
                         pause = true;
                     }
 
                 }
-
-
 
             }
         }     
