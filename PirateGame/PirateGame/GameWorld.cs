@@ -11,22 +11,18 @@ namespace PirateGame
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
-        private Dictionary<Vector2, int> ground;
+        private Dictionary<Vector2, int> tiles;
         private Texture2D textureAtlas;
-
-        private Vector2 pos = new Vector2(-100, -100);
-        private Rectangle rec;
         private Rectangle destinationRectange;
         private Matrix _translation;
-        public List<Rectangle> tiles = new();
+        public List<Rectangle> collisionTiles = new();
 
         public GameWorld()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            ground = LoadMap("../../../Content/Map/Map.csv");
-            rec = new Rectangle((int)pos.X, (int)pos.Y, 32, 32);
+            tiles = LoadMap("../../../Content/Map/TestMap.csv");
         }
 
         protected override void Initialize()
@@ -48,10 +44,8 @@ namespace PirateGame
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            TempMove(gameTime);
-            calculateTranslation();
-            checkCollision();
-            rec = new Rectangle((int)pos.X, (int)pos.Y, 32, 32);
+            // Replace vector zero with cameras target
+            CalculateCamera(Vector2.Zero);
 
             base.Update(gameTime);
         }
@@ -61,30 +55,18 @@ namespace PirateGame
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             _spriteBatch.Begin(transformMatrix: _translation);
-            tiles.Clear();
-            foreach (var item in ground)
-            {
-                int displayTilesize = 48;
-                int numTilesPerRow = 6;
-                int pixelTilesize = 32;
 
-                destinationRectange = new((int)item.Key.X * displayTilesize, (int)item.Key.Y * displayTilesize, displayTilesize, displayTilesize);
-
-                int x = item.Value % numTilesPerRow;
-                int y = item.Value / numTilesPerRow;
-
-                Rectangle source = new(x * pixelTilesize, y * pixelTilesize, pixelTilesize, pixelTilesize);
-
-                tiles.Add(destinationRectange);
-                _spriteBatch.Draw(textureAtlas, destinationRectange, source, Color.White);
-            }
-            _spriteBatch.Draw(textureAtlas, rec, Color.White);
-
+            DrawMap(tiles);
+            
             _spriteBatch.End();
 
             base.Draw(gameTime);
         }
-
+        /// <summary>
+        /// Returns every position and type of tile from given tilemap
+        /// </summary>
+        /// <param name="filepath"></param>
+        /// <returns></returns>
         private Dictionary<Vector2, int> LoadMap(string filepath)
         {
             Dictionary<Vector2, int> result = new();
@@ -111,51 +93,32 @@ namespace PirateGame
             return result;
         }
 
-        private void TempMove(GameTime gameTime)
+        private void DrawMap(Dictionary<Vector2, int> ground)
         {
-            KeyboardState keystate = Keyboard.GetState();
+            collisionTiles.Clear();
+            foreach (var item in ground)
+            {
+                // Adjust to scale level size
+                int displayTilesize = 32;
+                int numTilesPerRow = 6;
+                int pixelTilesize = 32;
 
-            if (keystate.IsKeyDown(Keys.W))
-            {
-                pos.Y -= 1;
-            }
-            if (keystate.IsKeyDown(Keys.A))
-            {
-                pos.X -= 1;
-            }
-            if (keystate.IsKeyDown(Keys.S))
-            {
-                pos.Y += 1;
-            }
-            if (keystate.IsKeyDown(Keys.D))
-            {
-                pos.X += 1;
-            }
+                destinationRectange = new((int)item.Key.X * displayTilesize, (int)item.Key.Y * displayTilesize, displayTilesize, displayTilesize);
+                collisionTiles.Add(destinationRectange);
 
+                int x = item.Value % numTilesPerRow;
+                int y = item.Value / numTilesPerRow;
+
+                Rectangle source = new(x * pixelTilesize, y * pixelTilesize, pixelTilesize, pixelTilesize);
+
+                _spriteBatch.Draw(textureAtlas, destinationRectange, source, Color.White);
+            }
         }
-        
-        private void calculateTranslation()
+        private void CalculateCamera(Vector2 vector)
         {
-            var dx = (_graphics.PreferredBackBufferWidth / 2) - pos.X;
-            var dy = (_graphics.PreferredBackBufferHeight / 2) - pos.Y;
+            var dx = (_graphics.PreferredBackBufferWidth / 2) - vector.X;
+            var dy = (_graphics.PreferredBackBufferHeight / 2) - vector.Y;
             _translation = Matrix.CreateTranslation(dx, dy, 0f);
-        }
-
-        private void checkCollision()
-        {
-            bool col = false;
-            foreach (Rectangle rectangle in tiles)
-            {
-                if (rec.Intersects(rectangle))
-                {
-                     col = true;
-                }
-
-            }
-            if (col)
-            {
-                //stop moving
-            }
         }
     }
 }
