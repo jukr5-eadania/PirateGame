@@ -42,6 +42,7 @@ namespace PirateGame
             GameWorld.Width = _graphics.PreferredBackBufferWidth;
             gameObjects.Add(new Player());
             gameObjects.Add(new Enemy());
+            
            
 
             base.Initialize();
@@ -82,8 +83,9 @@ namespace PirateGame
             {
                 gameObject.Draw(_spriteBatch);
                 DrawCollisionBox(gameObject);
+                DrawAttackBox(gameObject);
+
             }
-            
             _spriteBatch.End();
 
             base.Draw(gameTime);
@@ -102,9 +104,22 @@ namespace PirateGame
             _spriteBatch.Draw(collisionTexture, rightLine, null, Color.Red, 0, Vector2.Zero, SpriteEffects.None, 1);
             _spriteBatch.Draw(collisionTexture, leftLine, null, Color.Red, 0, Vector2.Zero, SpriteEffects.None, 1);
         }
-        private void DrawAttackBox()
+
+        private void DrawAttackBox(GameObject atkBox)
         {
-            
+            // AttackBox for enemy
+            Rectangle attackBox = atkBox.attackBox;
+            Rectangle topLine = new Rectangle(attackBox.X, attackBox.Y, attackBox.Width, 1);
+            Rectangle bottomLine = new Rectangle(attackBox.X, attackBox.Y + attackBox.Height, attackBox.Width, 1);
+            Rectangle rightLine = new Rectangle(attackBox.X + attackBox.Width, attackBox.Y, 1, attackBox.Height);
+            Rectangle leftLine = new Rectangle(attackBox.X, attackBox.Y, 1, attackBox.Height);
+
+            _spriteBatch.Draw(collisionTexture, topLine, null, Color.Yellow, 0, Vector2.Zero, SpriteEffects.None, 1);
+            _spriteBatch.Draw(collisionTexture, bottomLine, null, Color.Yellow, 0, Vector2.Zero, SpriteEffects.None, 1);
+            _spriteBatch.Draw(collisionTexture, rightLine, null, Color.Yellow, 0, Vector2.Zero, SpriteEffects.None, 1);
+            _spriteBatch.Draw(collisionTexture, leftLine, null, Color.Yellow, 0, Vector2.Zero, SpriteEffects.None, 1);
         }
+
+
     }
 }

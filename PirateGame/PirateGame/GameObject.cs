@@ -31,9 +31,16 @@ namespace PirateGame
                 return new Rectangle((int)position.X - (int)origin.X, (int)position.Y - (int)origin.Y, sprite.Width, sprite.Height);
             }
         }
+        public virtual Rectangle attackBox
+        {
+            get
+            {
+                return new Rectangle((int)position.X - (int)origin.X, (int)position.Y - (int)origin.Y, sprite.Width, sprite.Height);
+            }
+        }
 
         // Methods
-        
+
         public abstract void LoadContent(ContentManager content);
         public abstract void Update(GameTime gameTime);
        

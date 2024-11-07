@@ -22,13 +22,21 @@ namespace PirateGame
         private bool pause = true; // For when the enemy needs to pause
         private float timeElaps;
         
+        
         // Properties
 
-        public override Rectangle collisionBox
+        public override Rectangle collisionBox // The collision box for when hit / taking damage
         {
             get
             {
                 return new Rectangle((int)position.X - (int)origin.X, (int)position.Y - (int)origin.Y, sprite.Width+4, sprite.Height+4);
+            }
+        }
+        public override Rectangle attackBox // The collision box for when hitting the player / doing damage
+        {
+            get
+            {
+                return new Rectangle((int)position.X + (int)origin.X, (int)position.Y - (int)origin.Y, sprite.Width, sprite.Height);
             }
         }
 
@@ -102,11 +110,14 @@ namespace PirateGame
 
         }
 
-        public Rectangle AttackBox()
+        /// <summary>
+        /// When attacking the player
+        /// </summary>
+        public void Attack()
         {
 
-            return new Rectangle((int)position.X - (int)origin.X, (int)position.Y - (int)origin.Y, sprite.Width * 2, sprite.Height);
         }
+
 
         /// <summary>
         /// The enemy patrols a given path back and forth between two waypoints
