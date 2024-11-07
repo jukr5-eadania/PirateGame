@@ -24,11 +24,10 @@ namespace PirateGame
         protected SpriteEffects spriteEffects = SpriteEffects.None;
 
         // Properties
-        public Rectangle collisionBox
+        public virtual Rectangle collisionBox
         {
             get
             {
-                // note : origin gets defined in "Draw"
                 return new Rectangle((int)position.X - (int)origin.X, (int)position.Y - (int)origin.Y, sprite.Width, sprite.Height);
             }
         }

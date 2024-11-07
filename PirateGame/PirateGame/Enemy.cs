@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using SharpDX.Direct2D1;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,16 +21,23 @@ namespace PirateGame
         private bool goLeft = true; // For when the enemy needs to go left
         private bool pause = true; // For when the enemy needs to pause
         private float timeElaps;
-        private Rectangle attackBox;
-
+        
         // Properties
+
+        public override Rectangle collisionBox
+        {
+            get
+            {
+                return new Rectangle((int)position.X - (int)origin.X, (int)position.Y - (int)origin.Y, sprite.Width+4, sprite.Height+4);
+            }
+        }
 
         // Methods
         public Enemy()
         {
             health = 50;            
             position = new Vector2(GameWorld.Width / 2, GameWorld.Height / 2);
-            scale = 2;
+            scale = 1.2f;
             
         }
 
@@ -75,7 +83,6 @@ namespace PirateGame
             AddAnimation(new Animation(hurt, "skeleton_hurt", 12));
             AddAnimation(new Animation(die, "skeleton_die", 12));
 
-            attackBox = new Rectangle();
         }
 
         /// <summary>
@@ -93,6 +100,12 @@ namespace PirateGame
         public override void TakeDamage()
         {
 
+        }
+
+        public Rectangle AttackBox()
+        {
+
+            return new Rectangle((int)position.X - (int)origin.X, (int)position.Y - (int)origin.Y, sprite.Width * 2, sprite.Height);
         }
 
         /// <summary>
@@ -163,13 +176,15 @@ namespace PirateGame
                 }
 
             }
-        }     
+        } 
+        
 
         public override void Update(GameTime gameTime)
         {
             Animation(gameTime);
             Patrol(gameTime);
             Move(gameTime);
+            
         }
 
     }  
