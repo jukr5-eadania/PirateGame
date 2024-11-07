@@ -13,10 +13,11 @@ namespace PirateGame
         // Field
         protected Texture2D sprite;
         protected Vector2 velocity;
+        protected Vector2 jumpVelocity;
         protected Vector2 position;
         protected Vector2 origin;
         protected float speed;
-        private Animation currentAnimation;
+        protected Animation currentAnimation;
         protected SpriteEffects spriteEffects = SpriteEffects.None;
         protected Dictionary<string, Animation> animations = new Dictionary<string, Animation>();
         private int currentIndex; // Index of current frame
@@ -59,6 +60,8 @@ namespace PirateGame
 
             //Move the object
             position += ((velocity * speed) * deltaTime);
+
+            position += ((jumpVelocity * speed) * deltaTime);
         }
 
         /// <summary>
@@ -75,13 +78,13 @@ namespace PirateGame
             currentIndex = (int)(timeElapsed * currentAnimation.FPS);
             
             //check if the animation needs to restart
-            if(currentIndex >= currentAnimation.Sprites.Length - 1 && currentAnimation.IsLooping)
+            if(currentIndex >= currentAnimation.Sprites.Length && currentAnimation.IsLooping)
             {
                 //reset the animation
                 timeElapsed = 0;
                 currentIndex = 0;
             }
-            else if (currentIndex >= currentAnimation.Sprites.Length - 1 && !currentAnimation.IsLooping)
+            else if (currentIndex >= currentAnimation.Sprites.Length && !currentAnimation.IsLooping)
             {
                 PlayAnimation("pirate_idle");
                 timeElapsed = 0;

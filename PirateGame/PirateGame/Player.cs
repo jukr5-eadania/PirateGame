@@ -10,8 +10,13 @@ namespace PirateGame
     {
         private int health;
         private int damage;
-        private bool onGround = true;
+
         private int combo;
+        private bool isAttacking;
+        private float attackTime;
+        private float maxAttackTime = 1f;
+
+        private bool onGround = true;
         private float jumpTime;
         private float maxJumpTime = 0.5f;
         private bool isJumping;
@@ -123,7 +128,7 @@ namespace PirateGame
                 jump[i] = content.Load<Texture2D>($"Pirate/Jump/jump{i}");
             }
 
-            AddAnimation(new Animation(jump, "pirate_jump", 2, false));
+            AddAnimation(new Animation(jump, "pirate_jump", 4, false));
 
             //Loading jump_dust sprites
             Texture2D[] jump_dust = new Texture2D[3];
@@ -198,6 +203,16 @@ namespace PirateGame
             {
                 jumpTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
+
+            if (isAttacking == true)
+            {
+                attackTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
+
+            if (velocity == Vector2.Zero && currentAnimation.IsLooping)
+            {
+                PlayAnimation("pirate_idle");
+            }
         }
 
         public override void OnCollision(GameObject other)
@@ -207,39 +222,42 @@ namespace PirateGame
 
         public void HandleInput()
         {
-            if (isJumping == false)
-            {
-                velocity = Vector2.Zero;
-            }
 
+            velocity = Vector2.Zero;
 
             KeyboardState keystate = Keyboard.GetState();
 
-            if (keystate.IsKeyDown(Keys.A))
+            if (keystate.IsKeyDown(Keys.A) && currentAnimation.IsLooping || keystate.IsKeyDown(Keys.A) && isJumping)
             {
                 velocity += new Vector2(-1, 0);
                 spriteEffects = SpriteEffects.FlipHorizontally;
-                PlayAnimation("pirate_run");
+                if (!isJumping)
+                {
+                    PlayAnimation("pirate_run");
+                }
             }
 
-            if (keystate.IsKeyDown(Keys.D))
+            if (keystate.IsKeyDown(Keys.D) && currentAnimation.IsLooping || keystate.IsKeyDown(Keys.D) && isJumping)
             {
                 velocity += new Vector2(1, 0);
                 spriteEffects = SpriteEffects.None;
-                PlayAnimation("pirate_run");
+                if (!isJumping)
+                {
+                    PlayAnimation("pirate_run");
+                }
             }
 
-            if (keystate.IsKeyDown(Keys.Space) && onGround)
+            if (keystate.IsKeyDown(Keys.Space) && onGround && currentAnimation.IsLooping)
             {
                 Jump();
             }
 
-            if (keystate.IsKeyDown(Keys.OemComma))
+            if (keystate.IsKeyDown(Keys.OemComma) && currentAnimation.IsLooping)
             {
                 Attack();
             }
 
-            if (keystate.IsKeyDown(Keys.OemPeriod))
+            if (keystate.IsKeyDown(Keys.OemPeriod) && currentAnimation.IsLooping)
             {
                 Shoot();
             }
@@ -249,7 +267,7 @@ namespace PirateGame
                 if (jumpTime >= maxJumpTime)
                 {
                     PlayAnimation("pirate_fall");
-                    velocity += new Vector2(0, 1);
+                    jumpVelocity += new Vector2(0, 1);
                     isJumping = false;
                 }
             }
@@ -257,32 +275,44 @@ namespace PirateGame
 
         public void Jump()
         {
-            isJumping = true;
-            PlayAnimation("pirate_jump");
-            velocity += new Vector2(0, -1);
-            onGround = false;
+            if (!isJumping)
+            {
+                isJumping = true;
+                PlayAnimation("pirate_jump");
+                jumpVelocity += new Vector2(0, -1);
+                onGround = false;
+            }
         }
 
         public void Attack()
         {
-            if (combo == 0)
+            isAttacking = true;
+            combo++;
+            if (combo == 1)
             {
                 PlayAnimation("pirate_atk1");
             }
-            if (combo == 1)
+            if (combo == 2)
             {
                 PlayAnimation("pirate_atk2");
             }
-            if (combo == 2)
+            if (combo == 3)
             {
                 PlayAnimation("pirate_atk3");
+            }
+            if (attackTime >= maxAttackTime)
+            {
+                isAttacking = false;
+                combo = 0;
+                attackTime = 0;
             }
         }
 
         public void Shoot()
         {
             PlayAnimation("pirate_gun_out");
-            //PlayAnimation("pirate_shoot");
+            PlayAnimation("pirate_shoot");
+            PlayAnimation("pirate_gun_in");
         }
     }
 }
