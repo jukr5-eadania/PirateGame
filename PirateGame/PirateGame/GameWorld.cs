@@ -10,6 +10,9 @@ namespace PirateGame
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        private List<GameObject> gameObjects = new List<GameObject>();
+        public static int Height { get; set; }
+        public static int Width { get; set; }
 
         private Dictionary<Vector2, int> tiles;
         private Texture2D textureAtlas;
@@ -20,6 +23,11 @@ namespace PirateGame
         public GameWorld()
         {
             _graphics = new GraphicsDeviceManager(this);
+            _graphics.HardwareModeSwitch = false;
+            Window.IsBorderless = true;
+            _graphics.IsFullScreen = true;
+            _graphics.PreferredBackBufferHeight = 1080;
+            _graphics.PreferredBackBufferWidth = 1920;
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
             tiles = LoadMap("../../../Content/Map/TestMap.csv");
@@ -27,8 +35,8 @@ namespace PirateGame
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-
+            GameWorld.Height = _graphics.PreferredBackBufferHeight;
+            GameWorld.Width = _graphics.PreferredBackBufferWidth;
             base.Initialize();
         }
 
@@ -36,6 +44,10 @@ namespace PirateGame
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            foreach (GameObject gameObject in gameObjects)
+            {
+                gameObject.LoadContent(Content);
+            }
             textureAtlas = Content.Load<Texture2D>("Tiles");
         }
 
@@ -44,6 +56,10 @@ namespace PirateGame
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            foreach (GameObject gameObject in gameObjects)
+            {
+                gameObject.Update(gameTime);
+            }
             // Replace vector zero with cameras target
             CalculateCamera(Vector2.Zero);
 
@@ -55,6 +71,11 @@ namespace PirateGame
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             _spriteBatch.Begin(transformMatrix: _translation);
+
+            foreach (GameObject gameObject in gameObjects)
+            {
+                gameObject.Draw(_spriteBatch);
+            }
 
             DrawMap(tiles);
             
