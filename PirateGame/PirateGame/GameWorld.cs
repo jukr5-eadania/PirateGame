@@ -12,15 +12,17 @@ namespace PirateGame
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private List<GameObject> gameObjects = new List<GameObject>();
+        private static List<GameObject> removeObjects = new List<GameObject>();
         
         public static int Height { get; set; }
         public static int Width { get; set; }
 
         private Texture2D collisionTexture;
-        
-        
+                
 
         // Properties
+        internal static List<GameObject> RemoveObjects { get => removeObjects; set => removeObjects = value; }
+        
               
 
         // Methods
@@ -67,8 +69,29 @@ namespace PirateGame
             foreach (GameObject gameObject in gameObjects)
             {
                 gameObject.Update(gameTime);
+                
+                /*foreach (GameObject other in gameObjects)
+                {
+                    gameObject.CheckCollision(other);
+                }*/
             }
-            
+            foreach (GameObject go in gameObjects)
+            {
+                go.Update(gameTime);
+                foreach (GameObject other in gameObjects)
+                {
+                    go.CheckCollision(other);
+
+                }
+            }
+
+            foreach (GameObject gameObject in RemoveObjects)
+            {
+                gameObjects.Remove(gameObject);
+
+            }
+            RemoveObjects.Clear();
+
 
             base.Update(gameTime);
         }
@@ -91,7 +114,7 @@ namespace PirateGame
             base.Draw(gameTime);
         }
 
-        private void DrawCollisionBox(GameObject go)
+       private void DrawCollisionBox(GameObject go)
         {
             Rectangle collisionBox = go.collisionBox;
             Rectangle topLine = new Rectangle(collisionBox.X, collisionBox.Y, collisionBox.Width, 1);
@@ -105,10 +128,10 @@ namespace PirateGame
             _spriteBatch.Draw(collisionTexture, leftLine, null, Color.Red, 0, Vector2.Zero, SpriteEffects.None, 1);
         }
 
-        private void DrawAttackBox(GameObject atkBox)
+       private void DrawAttackBox(GameObject gameObject)
         {
             // AttackBox for enemy
-            Rectangle attackBox = atkBox.attackBox;
+            Rectangle attackBox = gameObject.attackBox;
             Rectangle topLine = new Rectangle(attackBox.X, attackBox.Y, attackBox.Width, 1);
             Rectangle bottomLine = new Rectangle(attackBox.X, attackBox.Y + attackBox.Height, attackBox.Width, 1);
             Rectangle rightLine = new Rectangle(attackBox.X + attackBox.Width, attackBox.Y, 1, attackBox.Height);

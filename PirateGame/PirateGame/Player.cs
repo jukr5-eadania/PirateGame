@@ -15,12 +15,12 @@ namespace PirateGame
 
         public Player()
         {
-            speed = 100;
+            speed = 200;
         }
 
         public override void LoadContent(ContentManager content)
         {
-            position = new Vector2(GameWorld.Width / 2, GameWorld.Height / 2);
+            position = new Vector2(GameWorld.Width- 200, GameWorld.Height / 2);
 
             Texture2D[] idle = new Texture2D[5];
 
@@ -63,7 +63,7 @@ namespace PirateGame
 
         public override void OnCollision(GameObject other)
         {
-
+            
         }
 
         public void HandleInput()

@@ -133,6 +133,11 @@ namespace PirateGame
             {
                 OnCollision(other);
             }
+
+            /*if (attackBox.Intersects(other.collisionBox) && other != this)
+            {
+                OnCollision(other);
+            }*/
         }
         
         /// <summary>
