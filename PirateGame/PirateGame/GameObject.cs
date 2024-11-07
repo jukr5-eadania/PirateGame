@@ -20,7 +20,6 @@ namespace PirateGame
         protected SpriteEffects spriteEffects = SpriteEffects.None;
         protected Dictionary<string, Animation> animations = new Dictionary<string, Animation>();
         private int currentIndex; // Index of current frame
-        protected bool LoopAnimation = true;
         protected float timeElapsed; // time passed since frame changed
 
         // Properties
@@ -76,16 +75,15 @@ namespace PirateGame
             currentIndex = (int)(timeElapsed * currentAnimation.FPS);
             
             //check if the animation needs to restart
-            if(currentIndex >= currentAnimation.Sprites.Length - 1 && LoopAnimation)
+            if(currentIndex >= currentAnimation.Sprites.Length - 1 && currentAnimation.IsLooping)
             {
                 //reset the animation
                 timeElapsed = 0;
                 currentIndex = 0;
             }
-            else if (currentIndex >= currentAnimation.Sprites.Length - 1 && !LoopAnimation)
+            else if (currentIndex >= currentAnimation.Sprites.Length - 1 && !currentAnimation.IsLooping)
             {
                 PlayAnimation("pirate_idle");
-                LoopAnimation = true;
                 timeElapsed = 0;
                 currentIndex = 0;
             }
