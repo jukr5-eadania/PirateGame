@@ -31,18 +31,21 @@ namespace PirateGame
 
         // Properties
 
-        public override Rectangle collisionBox // The collision box for when hit / taking damage
+        // The collision box for when hit / taking damage
+        public override Rectangle collisionBox 
         {
             get
             {
-                return new Rectangle((int)position.X - (int)origin.X, (int)position.Y - (int)origin.Y, 38, 50); //30 and 50 are the width and height of the skeleton idle sprite
+                return new Rectangle((int)position.X - (int)origin.X, (int)position.Y - (int)origin.Y, sprite.Width, sprite.Height); 
             }
         }
-        public override Rectangle attackBox // The collision box for when hitting the player / doing damage
+        
+        // The collision box for when hitting the player / doing damage
+        public override Rectangle attackBox 
         {
             get
             {
-                return new Rectangle((int)position.X + (int)origin.X, (int)position.Y - (int)origin.Y, 10, sprite.Height);
+                return new Rectangle((int)position.X + (int)origin.X, (int)position.Y - (int)origin.Y, 15, sprite.Height);
             }
         }
 
@@ -57,7 +60,6 @@ namespace PirateGame
 
         public override void LoadContent(ContentManager content)
         {
-
 
             Texture2D[] idle = new Texture2D[8]; // loading the animation for idle
             for (int i = 0; i < idle.Length; i++)
@@ -114,8 +116,6 @@ namespace PirateGame
                     
                 }
 
-                //GameWorld.RemoveObjects.Add(other);
-
             }
 
         }
@@ -125,15 +125,16 @@ namespace PirateGame
         /// </summary>
         public override void TakeDamage()
         {
-            
-            
+                        
             if (health <= 0)// when dead
             {
                 isDead = true;
             }
 
         }
-
+        /// <summary>
+        /// When the enemy dies it plays its dead animation and then disappear and gets removed
+        /// </summary>
         public void Dead()
         {
             if (isDead == true)
@@ -141,8 +142,7 @@ namespace PirateGame
                 patrol = false;
                 PlayAnimation("skeleton_die");
                 
-
-                if (pauseDeath >= 5f)
+                if (pauseDeath >= 3f) // Note: see pauseDeath in Update
                 {
                     GameWorld.RemoveObjects.Add(this);
                 }
@@ -159,9 +159,8 @@ namespace PirateGame
             if (isAttacking)
             {
                 PlayAnimation("skeleton_attack");
-
-                // Note: see cooldown in Update
-                if (cooldown >= 1f)
+                
+                if (cooldown >= 1f) // Note: see cooldown in Update
                 {
                     isAttacking = false;
                     cooldown = 0f;
