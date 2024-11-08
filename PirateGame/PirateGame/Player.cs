@@ -29,7 +29,7 @@ namespace PirateGame
                 idle[i] = content.Load<Texture2D>($"Pirate/Idle/idle{i}");
             }
 
-            AddAnimation(new Animation(idle, "idle", 10));
+            AddAnimation(new Animation(idle, "idle", 10, true));
 
             Texture2D[] run = new Texture2D[6];
 
@@ -38,7 +38,7 @@ namespace PirateGame
                 run[i] = content.Load<Texture2D>($"Pirate/Run/run{i}");
             }
 
-            AddAnimation(new Animation(run, "run", 10));
+            AddAnimation(new Animation(run, "run", 10, true));
 
             PlayAnimation("idle");
         }
@@ -107,7 +107,7 @@ namespace PirateGame
 
         public void Attack()
         {
-
+            
         }
 
         public void Shoot()

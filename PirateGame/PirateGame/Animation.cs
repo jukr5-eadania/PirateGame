@@ -8,12 +8,15 @@ namespace PirateGame
         public string Name { get; private set; }
 
         public Texture2D[] Sprites { get; private set; }
+        
+        public bool IsLooping { get; private set; }
 
-        public Animation(Texture2D[] sprites, string name, float fps)
+        public Animation(Texture2D[] sprites, string name, float fps, bool isLooping)
         {
             Sprites = sprites;
             Name = name;
             FPS = fps;
+            IsLooping = isLooping;
         }
     }
 }

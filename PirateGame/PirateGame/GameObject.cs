@@ -16,7 +16,7 @@ namespace PirateGame
         protected Vector2 position;
         protected Vector2 origin;
         protected float speed;
-        private Animation currentAnimation;
+        protected Animation currentAnimation;
         protected Dictionary<string, Animation> animations = new Dictionary<string, Animation>();
         private float timeElapsed; // time passed since frame changed
         private int currentIndex; // Index of current frame
@@ -31,13 +31,8 @@ namespace PirateGame
                 return new Rectangle((int)position.X - (int)origin.X, (int)position.Y - (int)origin.Y, sprite.Width, sprite.Height);
             }
         }
-        public virtual Rectangle attackBox
-        {
-            get
-            {
-                return new Rectangle((int)position.X - (int)origin.X, (int)position.Y - (int)origin.Y, sprite.Width, sprite.Height);
-            }
-        }
+        public virtual Rectangle attackBox { get; }
+        
 
         // Methods
 
@@ -82,9 +77,15 @@ namespace PirateGame
             currentIndex = (int)(timeElapsed * currentAnimation.FPS);
             
             //check if the animation needs to restart
-            if(currentIndex >= currentAnimation.Sprites.Length - 1)
+            if(currentIndex >= currentAnimation.Sprites.Length && currentAnimation.IsLooping)
             {
                 //reset the animation
+                timeElapsed = 0;
+                currentIndex = 0;
+            }
+            else if (currentIndex >= currentAnimation.Sprites.Length && !currentAnimation.IsLooping)
+            {
+                PlayAnimation("skeleton_idle");
                 timeElapsed = 0;
                 currentIndex = 0;
             }
@@ -129,15 +130,15 @@ namespace PirateGame
         /// <param name="other"></param>
         public void CheckCollision (GameObject other)
         {
-            if(collisionBox.Intersects(other.collisionBox)&& other != this)
-            {
-                OnCollision(other);
-            }
-
-            /*if (attackBox.Intersects(other.collisionBox) && other != this)
+            /*if(collisionBox.Intersects(other.collisionBox)&& other != this)
             {
                 OnCollision(other);
             }*/
+
+            if (attackBox.Intersects(other.collisionBox) && other != this)
+            {
+                OnCollision(other);
+            }
         }
         
         /// <summary>
