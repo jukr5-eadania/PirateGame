@@ -21,17 +21,16 @@ namespace PirateGame
         private float maxJumpTime = 0.5f;
         private bool isJumping;
 
-        public Vector2 Position { get; set; }
+        public Vector2 Position { get => position; }
 
         public Player(Vector2 position)
         {
-            Position = position;
+            this.position = position;
             speed = 200;
         }
 
         public override void LoadContent(ContentManager content)
         {
-            //position = new Vector2(GameWorld.Width / 2, GameWorld.Height / 2);
 
             //Loading atk1 sprites
             Texture2D[] atk1 = new Texture2D[6];

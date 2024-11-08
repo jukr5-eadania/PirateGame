@@ -13,14 +13,12 @@ namespace PirateGame
         private List<GameObject> gameObjects = new List<GameObject>();
         public static int Height { get; set; }
         public static int Width { get; set; }
-
         private Dictionary<Vector2, int> tiles;
         private Texture2D textureAtlas;
         private Rectangle destinationRectange;
         private Matrix _translation;
         public List<Rectangle> collisionTiles = new();
         private Player player = new Player(new Vector2(GameWorld.Width / 2, GameWorld.Height / 2));
-        private Vector2 cameraPos;
 
         public GameWorld()
         {
@@ -63,8 +61,9 @@ namespace PirateGame
             {
                 gameObject.Update(gameTime);
             }
+
             // Replace vector zero with cameras target
-            CalculateCamera(cameraPos);
+            CalculateCamera(player.Position);
 
             base.Update(gameTime);
         }
