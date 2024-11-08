@@ -8,8 +8,11 @@ namespace PirateGame
 {
     internal class Player : GameObject
     {
-        private int health;
+        private int health = 3;
         private int damage;
+        private float invincibleTime;
+        private float maxInvincibleTime = 2f;
+        private bool isHit;
 
         private int combo;
         private bool isAttacking;
@@ -200,13 +203,14 @@ namespace PirateGame
             HandleInput();
             Move(gameTime);
             Animation(gameTime);
+            isAlive();
 
-            if (isJumping == true)
+            if (isJumping)
             {
                 jumpTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
 
-            if (isAttacking == true)
+            if (isAttacking)
             {
                 attackTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
@@ -222,10 +226,33 @@ namespace PirateGame
             {
                 PlayAnimation("pirate_idle");
             }
+
+            if (isHit)
+            {
+                invincibleTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                if (invincibleTime >= maxInvincibleTime)
+                {
+                    isHit = false;
+                }
+            }
         }
 
         public override void OnCollision(GameObject other)
         {
+            if (other is Player)
+            {
+                velocity = Vector2.Zero;
+            }
+            if (!isHit)
+            {
+                if (other is Enemy)
+                {
+                    PlayAnimation("pirate_hit");
+                    health--;
+                    isHit = true;
+                }
+            }
 
         }
 
@@ -309,14 +336,25 @@ namespace PirateGame
             {
                 PlayAnimation("pirate_atk3");
             }
-            
+
         }
 
         public void Shoot()
         {
-            PlayAnimation("pirate_gun_out");
             PlayAnimation("pirate_shoot");
-            PlayAnimation("pirate_gun_in");
+        }
+
+        public bool isAlive()
+        {
+            if (health <= 0)
+            {
+                PlayAnimation("pirate_death");
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
     }
 }

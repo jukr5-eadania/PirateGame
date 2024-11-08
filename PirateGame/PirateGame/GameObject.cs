@@ -86,9 +86,9 @@ namespace PirateGame
             }
             else if (currentIndex >= currentAnimation.Sprites.Length && !currentAnimation.IsLooping)
             {
-                PlayAnimation("pirate_idle");
                 timeElapsed = 0;
                 currentIndex = 0;
+                PlayAnimation("pirate_idle");
             }
 
             sprite = currentAnimation.Sprites[currentIndex];
