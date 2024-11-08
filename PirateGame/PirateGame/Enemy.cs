@@ -49,7 +49,7 @@ namespace PirateGame
         public Enemy()
         {
             health = 50;
-            position = new Vector2(GameWorld.Width / 2, GameWorld.Height / 2);
+            position = new Vector2((GameWorld.Width / 2) -100, GameWorld.Height / 2);
             scale = 1.2f;
 
         }

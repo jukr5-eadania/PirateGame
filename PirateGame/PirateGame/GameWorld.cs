@@ -14,19 +14,16 @@ namespace PirateGame
         private SpriteBatch _spriteBatch;
         private List<GameObject> gameObjects = new List<GameObject>();
         private static List<GameObject> removeObjects = new List<GameObject>();
+        private Texture2D collisionTexture;
         
         public static int Height { get; set; }
         public static int Width { get; set; }
 
 
-        private Texture2D collisionTexture;
-                
-
         // Properties
         internal static List<GameObject> RemoveObjects { get => removeObjects; set => removeObjects = value; }
         
-              
-
+         
         // Methods
 
         private Dictionary<Vector2, int> tiles;
@@ -107,7 +104,7 @@ namespace PirateGame
 
 
             // Replace vector zero with cameras target
-            CalculateCamera(Vector2.Zero);
+            CalculateCamera(new Vector2 (Width/2, Height/2));
 
 
             base.Update(gameTime);

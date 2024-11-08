@@ -20,7 +20,7 @@ namespace PirateGame
 
         public override void LoadContent(ContentManager content)
         {
-            position = new Vector2(GameWorld.Width- 200, GameWorld.Height / 2);
+            position = new Vector2(GameWorld.Width/2, GameWorld.Height / 2);
 
             Texture2D[] idle = new Texture2D[5];
 
