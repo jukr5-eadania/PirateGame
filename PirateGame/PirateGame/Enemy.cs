@@ -24,9 +24,9 @@ namespace PirateGame
         private float timeElaps;
         private int attackDamage;
         private bool isAttacking = false;
-        private float cooldown;
+        private float cooldown; // The cooldown between its attack
         private bool isDead = false;
-        private float pauseDeath;
+        private float pauseDeath; // The pause between when it dies and when it disappear (gets deleted)
 
 
         // Properties
@@ -35,7 +35,7 @@ namespace PirateGame
         {
             get
             {
-                return new Rectangle((int)position.X - (int)origin.X, (int)position.Y - (int)origin.Y, sprite.Width + 4, sprite.Height + 4);
+                return new Rectangle((int)position.X - (int)origin.X, (int)position.Y - (int)origin.Y, 38, 50); //30 and 50 are the width and height of the skeleton idle sprite
             }
         }
         public override Rectangle attackBox // The collision box for when hitting the player / doing damage
@@ -49,8 +49,8 @@ namespace PirateGame
         // Methods
         public Enemy()
         {
-            health = 3;
-            position = new Vector2((GameWorld.Width / 2) -100, GameWorld.Height / 2);
+            health = 10;
+            position = new Vector2(GameWorld.Width / 2, GameWorld.Height / 4);
             scale = 1.2f;
 
         }

@@ -13,12 +13,19 @@ namespace PirateGame
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private List<GameObject> gameObjects = new List<GameObject>();
-        private static List<GameObject> removeObjects = new List<GameObject>();
         private Texture2D collisionTexture;
-        
+        private static List<GameObject> removeObjects = new List<GameObject>();
         public static int Height { get; set; }
         public static int Width { get; set; }
+        
+        private Dictionary<Vector2, int> tiles;
+        private Texture2D textureAtlas;
+        private Rectangle destinationRectange;
+        private Matrix _translation;
+        public List<Rectangle> collisionTiles = new();
+        private Player player = new Player(new Vector2(GameWorld.Width / 2, GameWorld.Height + 275));
 
+        
 
         // Properties
         internal static List<GameObject> RemoveObjects { get => removeObjects; set => removeObjects = value; }
@@ -26,14 +33,7 @@ namespace PirateGame
          
         // Methods
 
-        private Dictionary<Vector2, int> tiles;
-        private Texture2D textureAtlas;
-        private Rectangle destinationRectange;
-        private Matrix _translation;
-        public List<Rectangle> collisionTiles = new();
-        private Player player = new Player(new Vector2(GameWorld.Width / 2, GameWorld.Height / 2));
-
-
+        
         public GameWorld()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -51,7 +51,7 @@ namespace PirateGame
         {
             GameWorld.Height = _graphics.PreferredBackBufferHeight;
             GameWorld.Width = _graphics.PreferredBackBufferWidth;
-            gameObjects.Add(new Player());
+            gameObjects.Add(player);
             gameObjects.Add(new Enemy());
             
            
