@@ -13,6 +13,7 @@
 
 #---------------------------------- Content ---------------------------------#
 
+
 #begin Pirate/Atk1/atk0.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1428,4 +1429,8 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Skeleton_White/Walk/Skeleton_Walk_09.png
+
+#begin Tiles.png
+/build:Tiles.png
+
 
