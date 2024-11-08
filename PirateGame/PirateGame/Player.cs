@@ -14,7 +14,7 @@ namespace PirateGame
         private int combo;
         private bool isAttacking;
         private float attackTime;
-        private float maxAttackTime = 1f;
+        private float maxAttackTime = 1.5f;
 
         private bool onGround = true;
         private float jumpTime;
@@ -207,6 +207,13 @@ namespace PirateGame
             if (isAttacking == true)
             {
                 attackTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                if (attackTime >= maxAttackTime)
+                {
+                    isAttacking = false;
+                    combo = 0;
+                    attackTime = 0;
+                }
             }
 
             if (velocity == Vector2.Zero && currentAnimation.IsLooping)
@@ -300,12 +307,7 @@ namespace PirateGame
             {
                 PlayAnimation("pirate_atk3");
             }
-            if (attackTime >= maxAttackTime)
-            {
-                isAttacking = false;
-                combo = 0;
-                attackTime = 0;
-            }
+            
         }
 
         public void Shoot()
