@@ -13,15 +13,16 @@ namespace PirateGame
         // Field
         protected Texture2D sprite;
         protected Vector2 velocity;
+        protected Vector2 jumpVelocity;
         protected Vector2 position;
         protected Vector2 origin;
         protected float speed;
         protected Animation currentAnimation;
+        protected SpriteEffects spriteEffects = SpriteEffects.None;
         protected Dictionary<string, Animation> animations = new Dictionary<string, Animation>();
-        private float timeElapsed; // time passed since frame changed
         private int currentIndex; // Index of current frame
         protected float scale = 1;
-        protected SpriteEffects spriteEffects = SpriteEffects.None;
+        private float timeElapsed; // time passed since frame changed
 
         // Properties
         public virtual Rectangle collisionBox
@@ -61,6 +62,8 @@ namespace PirateGame
 
             //Move the object
             position += ((velocity * speed) * deltaTime);
+
+            position += ((jumpVelocity * speed) * deltaTime);
         }
 
         /// <summary>
@@ -93,6 +96,10 @@ namespace PirateGame
             sprite = currentAnimation.Sprites[currentIndex];
         }
 
+        /// <summary>
+        /// Plays an animation and makes sure the animation doesn't create an array overflow
+        /// </summary>
+        /// <param name="animationName">The name of the animation that is about to be played</param>
         public void PlayAnimation(string animationName)
         {
             if (animationName != currentAnimation.Name)
@@ -103,6 +110,10 @@ namespace PirateGame
             }
         }
 
+        /// <summary>
+        /// Adds animations to the animation dictionary
+        /// </summary>
+        /// <param name="animation">Takes an animation from the Animation class</param>
         public void AddAnimation(Animation animation)
         {
             animations.Add(animation.Name, animation);

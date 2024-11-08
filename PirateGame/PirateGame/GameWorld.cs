@@ -31,6 +31,7 @@ namespace PirateGame
         private Rectangle destinationRectange;
         private Matrix _translation;
         public List<Rectangle> collisionTiles = new();
+        private Player player = new Player(new Vector2(GameWorld.Width / 2, GameWorld.Height / 2));
 
 
         public GameWorld()
@@ -104,8 +105,7 @@ namespace PirateGame
 
 
             // Replace vector zero with cameras target
-            CalculateCamera(new Vector2 (Width/2, Height/2));
-
+            CalculateCamera(player.Position);
 
             base.Update(gameTime);
         }
