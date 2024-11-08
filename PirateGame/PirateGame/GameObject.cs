@@ -1,11 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PirateGame
 {
@@ -16,14 +12,16 @@ namespace PirateGame
     {
         // Field
         protected Texture2D sprite;
-        protected Texture2D[] sprites;
         protected Vector2 velocity;
+        protected Vector2 jumpVelocity;
         protected Vector2 position;
         protected Vector2 origin;
         protected float speed;
-        protected float fps; // the animation speed
-        private float timeElapsed; // time passed since frame changed
+        protected Animation currentAnimation;
+        protected SpriteEffects spriteEffects = SpriteEffects.None;
+        protected Dictionary<string, Animation> animations = new Dictionary<string, Animation>();
         private int currentIndex; // Index of current frame
+        protected float timeElapsed; // time passed since frame changed
 
         // Properties
         public Rectangle collisionBox
@@ -47,7 +45,7 @@ namespace PirateGame
         public void Draw (SpriteBatch spriteBatch)
         {       
             origin = new Vector2(sprite.Width / 2, sprite.Height / 2);
-            spriteBatch.Draw(sprite, position, null, Color.White, 0, origin, 1, SpriteEffects.None, 1);
+            spriteBatch.Draw(sprite, position, null, Color.White, 0, origin, 1, spriteEffects, 1);
         }
 
         /// <summary>
@@ -62,6 +60,8 @@ namespace PirateGame
 
             //Move the object
             position += ((velocity * speed) * deltaTime);
+
+            position += ((jumpVelocity * speed) * deltaTime);
         }
 
         /// <summary>
@@ -75,15 +75,50 @@ namespace PirateGame
             timeElapsed += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             // calculate the currrnet index
-            currentIndex = (int)(timeElapsed * fps);
-            sprite = sprites[currentIndex];
-
+            currentIndex = (int)(timeElapsed * currentAnimation.FPS);
+            
             //check if the animation needs to restart
-            if(currentIndex >= sprites.Length - 1)
+            if(currentIndex >= currentAnimation.Sprites.Length && currentAnimation.IsLooping)
             {
                 //reset the animation
                 timeElapsed = 0;
                 currentIndex = 0;
+            }
+            else if (currentIndex >= currentAnimation.Sprites.Length && !currentAnimation.IsLooping)
+            {
+                PlayAnimation("pirate_idle");
+                timeElapsed = 0;
+                currentIndex = 0;
+            }
+
+            sprite = currentAnimation.Sprites[currentIndex];
+        }
+
+        /// <summary>
+        /// Plays an animation and makes sure the animation doesn't create an array overflow
+        /// </summary>
+        /// <param name="animationName">The name of the animation that is about to be played</param>
+        public void PlayAnimation(string animationName)
+        {
+            if (animationName != currentAnimation.Name)
+            {
+                currentAnimation = animations[animationName];
+                timeElapsed = 0;
+                currentIndex = 0;
+            }
+        }
+
+        /// <summary>
+        /// Adds animations to the animation dictionary
+        /// </summary>
+        /// <param name="animation">Takes an animation from the Animation class</param>
+        public void AddAnimation(Animation animation)
+        {
+            animations.Add(animation.Name, animation);
+
+            if (currentAnimation == null)
+            {
+                currentAnimation = animation;
             }
         }
 
