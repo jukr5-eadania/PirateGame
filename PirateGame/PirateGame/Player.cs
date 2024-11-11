@@ -246,11 +246,16 @@ namespace PirateGame
             }
             if (!isHit)
             {
-                if (other is Enemy)
+                if (other is Enemy && currentAnimation.Name == "pirate_atk1" || other is Enemy && currentAnimation.Name == "pirate_atk2" || other is Enemy && currentAnimation.Name == "pirate_atk3")
+                {
+
+                }
+                else if (other is Enemy)
                 {
                     PlayAnimation("pirate_hit");
                     health--;
                     isHit = true;
+
                 }
             }
 
