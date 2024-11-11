@@ -5,7 +5,7 @@ namespace PirateGame
     /// <summary>
     /// Class that keeps track of animations and their sprites name and fps
     /// </summary>
-    internal class Animation
+    public class Animation
     {
         public float FPS { get; private set; }
         public string Name { get; private set; }

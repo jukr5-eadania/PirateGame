@@ -8,7 +8,7 @@ namespace PirateGame
     /// <summary>
     /// "GameObject" is a superclass for all object to inherit from
     /// </summary>
-    abstract class GameObject
+    public abstract class GameObject
     {
         // Field
         protected Texture2D sprite;

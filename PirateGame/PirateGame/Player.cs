@@ -24,6 +24,9 @@ namespace PirateGame
         private float maxJumpTime = 0.5f;
         private bool isJumping;
 
+        private int ammo = 5;
+        private Texture2D bulletSprite;
+
         public Vector2 Position { get => position; }
 
         public Player(Vector2 position)
@@ -193,9 +196,11 @@ namespace PirateGame
                 shoot_without_fire[i] = content.Load<Texture2D>($"Pirate/Shoot_Without_Fire/shoot_without_fire{i}");
             }
 
-            AddAnimation(new Animation(shoot_without_fire, "shoot_without_fire", 10, false));
+            AddAnimation(new Animation(shoot_without_fire, "pirate_shoot_without_fire", 10, false));
 
             PlayAnimation("pirate_idle");
+
+            bulletSprite = content.Load<Texture2D>("Pirate/bullet0");
         }
 
         public override void Update(GameTime gameTime)
@@ -346,7 +351,16 @@ namespace PirateGame
 
         public void Shoot()
         {
-            PlayAnimation("pirate_shoot");
+            if (ammo <= 0)
+            {
+                PlayAnimation("pirate_shoot_without_fire");
+            } else
+            {
+                PlayAnimation("pirate_shoot");
+                ammo--;
+                Bullet firedBullet = new Bullet(bulletSprite, position);
+                GameWorld.InstatiateGameObject(firedBullet);
+            }
         }
 
         public bool isAlive()

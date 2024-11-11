@@ -229,6 +229,18 @@
 /processorParam:TextureFormat=Color
 /build:Pirate/Atk3/atk5.png
 
+#begin Pirate/bullet0.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Pirate/bullet0.png
+
 #begin Pirate/Death/death0.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -876,3 +888,4 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Tiles.png
+

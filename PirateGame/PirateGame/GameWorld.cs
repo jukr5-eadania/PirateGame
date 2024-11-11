@@ -11,6 +11,8 @@ namespace PirateGame
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private List<GameObject> gameObjects = new List<GameObject>();
+        private static List<GameObject> gameObjectsToAdd = new List<GameObject>();
+        private static List<GameObject> gameObjectsToRemove = new List<GameObject>();
         public static int Height { get; set; }
         public static int Width { get; set; }
         private Dictionary<Vector2, int> tiles;
@@ -66,6 +68,19 @@ namespace PirateGame
             {
                 gameObject.Update(gameTime);
             }
+
+            foreach (GameObject gameObjectToSpawn in gameObjectsToAdd)
+            {
+                gameObjectToSpawn.LoadContent(Content);
+                gameObjects.Add(gameObjectToSpawn);
+            }
+            gameObjectsToAdd.Clear();
+
+            foreach (GameObject gameObjectToDespawn in gameObjectsToRemove)
+            {
+                gameObjects.Remove(gameObjectToDespawn);
+            }
+            gameObjectsToRemove.Clear();
 
             // Replace vector zero with cameras target
             CalculateCamera(player.Position);
@@ -147,6 +162,16 @@ namespace PirateGame
             var dx = (_graphics.PreferredBackBufferWidth / 2) - vector.X;
             var dy = (_graphics.PreferredBackBufferHeight / 2) - vector.Y;
             _translation = Matrix.CreateTranslation(dx, dy, 0f);
+        }
+
+        public static void InstatiateGameObject(GameObject gameObject)
+        {
+            gameObjectsToAdd.Add(gameObject);
+        }
+
+        public static void RemoveGameObject(GameObject gameObject)
+        {
+            gameObjectsToRemove.Add(gameObject);
         }
     }
 }

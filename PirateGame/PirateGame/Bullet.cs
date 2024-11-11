@@ -1,11 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PirateGame
 {
@@ -13,22 +8,33 @@ namespace PirateGame
     {
         public Bullet(Texture2D sprite, Vector2 position)
         {
-
+            this.sprite = sprite;
+            this.position = position;
+            velocity = new Vector2(1, 0);
+            speed = 300;
         }
 
         public override void LoadContent(ContentManager content)
         {
-            throw new NotImplementedException();
+            
         }
 
         public override void Update(GameTime gameTime)
         {
-            throw new NotImplementedException();
+            Move(gameTime);
         }
 
         public override void OnCollision(GameObject other)
         {
-            base.OnCollision(other);
+            if (other is Enemy)
+            {
+                GameWorld.RemoveGameObject(this);
+            }
+
+            //if (other is tiles)
+            //{
+
+            //}
         }
     }
 }
