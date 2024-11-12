@@ -2,28 +2,33 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PirateGame
 {
     internal class Coin : GameObject
     {
-        public Coin(Texture2D sprite, Vector2 position)
+        Random rnd = new Random();
+
+        public Coin(Vector2 position)
         {
             
         }
 
         public override void LoadContent(ContentManager content)
         {
-            throw new NotImplementedException();
+            Texture2D[] treasure = new Texture2D[6];
+
+            for (int i = 0; i < treasure.Length; i++)
+            {
+                treasure[i] = content.Load<Texture2D>($"Treasure/treasure{i}");
+            }
+
+            sprite = treasure[rnd.Next(0,7)];
         }
 
         public override void Update(GameTime gameTime)
         {
-            throw new NotImplementedException();
+            
         }
 
         public override void OnCollision(GameObject other)
