@@ -11,14 +11,14 @@ namespace PirateGame
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private List<GameObject> gameObjects = new List<GameObject>();
+        private Player player = new Player(new Vector2(GameWorld.Width / 2, GameWorld.Height / 2));
         public static int Height { get; set; }
         public static int Width { get; set; }
+       
         private Dictionary<Vector2, int> tiles;
         private Texture2D textureAtlas;
         private Rectangle destinationRectange;
         private Matrix _translation;
-        public List<Rectangle> collisionTiles = new();
-        private Player player = new Player(new Vector2(GameWorld.Width / 2, GameWorld.Height / 2));
 
         public GameWorld()
         {
@@ -30,7 +30,7 @@ namespace PirateGame
             _graphics.PreferredBackBufferWidth = 1920;
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            tiles = LoadMap("../../../Content/Map/TestMap.csv");
+            
         }
 
         protected override void Initialize()
@@ -50,6 +50,8 @@ namespace PirateGame
                 gameObject.LoadContent(Content);
             }
             textureAtlas = Content.Load<Texture2D>("Tiles");
+            tiles = LoadMap("../../../Content/Map/TestMap.csv");
+            AddTiles(tiles);
         }
 
         protected override void Update(GameTime gameTime)
@@ -78,9 +80,6 @@ namespace PirateGame
             {
                 gameObject.Draw(_spriteBatch);
             }
-
-            DrawMap(tiles);
-            
             _spriteBatch.End();
 
             base.Draw(gameTime);
@@ -116,9 +115,8 @@ namespace PirateGame
             return result;
         }
 
-        private void DrawMap(Dictionary<Vector2, int> ground)
+        private void AddTiles(Dictionary<Vector2, int> ground)
         {
-            collisionTiles.Clear();
             foreach (var item in ground)
             {
                 // Adjust to scale level size
@@ -127,14 +125,14 @@ namespace PirateGame
                 int pixelTilesize = 32;
 
                 destinationRectange = new((int)item.Key.X * displayTilesize, (int)item.Key.Y * displayTilesize, displayTilesize, displayTilesize);
-                collisionTiles.Add(destinationRectange);
 
                 int x = item.Value % numTilesPerRow;
                 int y = item.Value / numTilesPerRow;
 
                 Rectangle source = new(x * pixelTilesize, y * pixelTilesize, pixelTilesize, pixelTilesize);
 
-                _spriteBatch.Draw(textureAtlas, destinationRectange, source, Color.White);
+                
+                gameObjects.Add(new WorldTile(textureAtlas, destinationRectange, source));
             }
         }
         private void CalculateCamera(Vector2 vector)
