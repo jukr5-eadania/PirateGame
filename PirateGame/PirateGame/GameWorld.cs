@@ -20,6 +20,7 @@ namespace PirateGame
         private Rectangle destinationRectange;
         private Matrix _translation;
         private SpriteFont UIFont;
+        private Background bg;
 
         public GameWorld()
         {
@@ -38,7 +39,7 @@ namespace PirateGame
         {
             GameWorld.Height = _graphics.PreferredBackBufferHeight;
             GameWorld.Width = _graphics.PreferredBackBufferWidth;
-            gameObjects.Add(new Background());
+            bg = new Background();
             gameObjects.Add(player);
             gameObjects.Add(new Coin(new Vector2(GameWorld.Width/2, GameWorld.Height/2)));
             base.Initialize();
@@ -52,6 +53,9 @@ namespace PirateGame
             {
                 gameObject.LoadContent(Content);
             }
+
+            bg.LoadContent(Content);
+
             textureAtlas = Content.Load<Texture2D>("Tiles");
             tiles = LoadMap("../../../Content/Map/TestMap.csv");
             AddTiles(tiles);
@@ -80,6 +84,8 @@ namespace PirateGame
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             _spriteBatch.Begin(transformMatrix: _translation);
+
+            bg.Draw(_spriteBatch);
 
             foreach (GameObject gameObject in gameObjects)
             {

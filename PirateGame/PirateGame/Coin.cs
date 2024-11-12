@@ -23,7 +23,7 @@ namespace PirateGame
                 treasure[i] = content.Load<Texture2D>($"Treasure/treasure{i}");
             }
 
-            sprite = treasure[rnd.Next(0,7)];
+            sprite = treasure[rnd.Next(0,6)];
         }
 
         public override void Update(GameTime gameTime)
