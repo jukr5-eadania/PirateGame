@@ -139,9 +139,9 @@ namespace PirateGame
         }
         private void CalculateCamera(Vector2 vector)
         {
-            var dx = (_graphics.PreferredBackBufferWidth / 2) - vector.X;
-            var dy = (_graphics.PreferredBackBufferHeight / 2) - vector.Y;
-            _translation = Matrix.CreateTranslation(dx, dy, 0f);
+            var dx = (GameWorld.Width / 2) - vector.X;
+            var dy = (GameWorld.Height / 2) - vector.Y;
+            _translation = Matrix.CreateTranslation(new Vector3(-vector.X, -vector.Y, 0f)) * Matrix.CreateScale(2, 2, 1) * Matrix.CreateTranslation(new Vector3(GameWorld.Width * 0.5f, GameWorld.Height * 0.5f, 0));
         }
     }
 }
