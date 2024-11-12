@@ -39,6 +39,7 @@ namespace PirateGame
             GameWorld.Height = _graphics.PreferredBackBufferHeight;
             GameWorld.Width = _graphics.PreferredBackBufferWidth;
             gameObjects.Add(player);
+            gameObjects.Add(new Coin(new Vector2(GameWorld.Width/2, GameWorld.Height/2)));
             base.Initialize();
         }
 
