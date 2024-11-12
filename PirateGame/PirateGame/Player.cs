@@ -245,10 +245,14 @@ namespace PirateGame
 
         public override void OnCollision(GameObject other)
         {
-            if (other is Player)
+            if (other is WorldTile)
             {
+                position.Y -= 1;
+                onGround = true;
                 velocity = Vector2.Zero;
+                jumpVelocity = Vector2.Zero;
             }
+
             if (!isHit)
             {
                 if (other is Enemy && currentAnimation.Name == "pirate_atk1" || other is Enemy && currentAnimation.Name == "pirate_atk2" || other is Enemy && currentAnimation.Name == "pirate_atk3")
@@ -263,7 +267,6 @@ namespace PirateGame
 
                 }
             }
-
         }
 
         public void HandleInput()
@@ -323,6 +326,7 @@ namespace PirateGame
         {
             if (!isJumping)
             {
+                jumpTime = 0;
                 isJumping = true;
                 PlayAnimation("pirate_jump");
                 jumpVelocity += new Vector2(0, -1);

@@ -24,7 +24,7 @@ namespace PirateGame
         protected float timeElapsed; // time passed since frame changed
 
         // Properties
-        public Rectangle collisionBox
+        public virtual Rectangle collisionBox
         {
             get
             {
@@ -139,7 +139,7 @@ namespace PirateGame
         /// <param name="other"></param>
         public void CheckCollision (GameObject other)
         {
-            if(collisionBox.Intersects(other.collisionBox)&& other != this)
+            if(collisionBox.Intersects(other.collisionBox) && other != this)
             {
                 OnCollision(other);
             }
