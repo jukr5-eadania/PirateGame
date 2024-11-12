@@ -30,15 +30,7 @@ namespace PirateGame
 
 
         // Properties
-
-        // The collision box for when hit / taking damage
-        public override Rectangle collisionBox 
-        {
-            get
-            {
-                return new Rectangle((int)position.X - (int)origin.X, (int)position.Y - (int)origin.Y, sprite.Width, sprite.Height); 
-            }
-        }
+              
         
         // The collision box for when hitting the player / doing damage
         public override Rectangle attackBox 

@@ -36,7 +36,6 @@ namespace PirateGame
         
 
         // Methods
-
         public abstract void LoadContent(ContentManager content);
         public abstract void Update(GameTime gameTime);
        
