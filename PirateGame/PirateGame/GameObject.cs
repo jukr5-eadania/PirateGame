@@ -42,7 +42,7 @@ namespace PirateGame
         /// "Draw" draws the sprite.
         /// </summary>
         /// <param name="spriteBatch"></param>
-        public void Draw (SpriteBatch spriteBatch)
+        public virtual void Draw (SpriteBatch spriteBatch)
         {       
             origin = new Vector2(sprite.Width / 2, sprite.Height / 2);
             spriteBatch.Draw(sprite, position, null, Color.White, 0, origin, 1, spriteEffects, 1);
