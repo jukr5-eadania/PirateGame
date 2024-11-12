@@ -8,8 +8,10 @@ namespace PirateGame
 {
     internal class Player : GameObject
     {
-        private int health;
+        private int health = 3;
         private int damage;
+        private int coin;
+        private int ammo;
 
         private int combo;
         private bool isAttacking;
@@ -22,6 +24,9 @@ namespace PirateGame
         private bool isJumping;
 
         public Vector2 Position { get => position; }
+        public int Health { get => health; set => health = value; }
+        public int Coin { get => coin; set => coin = value; }
+        public int Ammo { get => ammo; set => ammo = value; }
 
         public Player(Vector2 position)
         {
