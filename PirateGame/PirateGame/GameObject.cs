@@ -22,6 +22,7 @@ namespace PirateGame
         protected Dictionary<string, Animation> animations = new Dictionary<string, Animation>();
         private int currentIndex; // Index of current frame
         protected float timeElapsed; // time passed since frame changed
+        protected float scale = 1;
 
         // Properties
         public Rectangle collisionBox
@@ -45,7 +46,7 @@ namespace PirateGame
         public virtual void Draw (SpriteBatch spriteBatch)
         {       
             origin = new Vector2(sprite.Width / 2, sprite.Height / 2);
-            spriteBatch.Draw(sprite, position, null, Color.White, 0, origin, 1, spriteEffects, 1);
+            spriteBatch.Draw(sprite, position, null, Color.White, 0, origin, scale, spriteEffects, 1);
         }
 
         /// <summary>
