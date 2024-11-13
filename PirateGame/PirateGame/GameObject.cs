@@ -22,6 +22,7 @@ namespace PirateGame
         protected Dictionary<string, Animation> animations = new Dictionary<string, Animation>();
         private int currentIndex; // Index of current frame
         protected float timeElapsed; // time passed since frame changed
+        protected List<GameObject> collidingObjects = new List<GameObject>();
 
         // Properties
         public virtual Rectangle collisionBox
@@ -34,16 +35,16 @@ namespace PirateGame
         }
 
         // Methods
-        
+
         public abstract void LoadContent(ContentManager content);
         public abstract void Update(GameTime gameTime);
-       
+
         /// <summary>
         /// "Draw" draws the sprite.
         /// </summary>
         /// <param name="spriteBatch"></param>
-        public virtual void Draw (SpriteBatch spriteBatch)
-        {       
+        public virtual void Draw(SpriteBatch spriteBatch)
+        {
             origin = new Vector2(sprite.Width / 2, sprite.Height / 2);
             spriteBatch.Draw(sprite, position, null, Color.White, 0, origin, 1, spriteEffects, 1);
         }
@@ -53,7 +54,7 @@ namespace PirateGame
         /// velocity and speed to find its new position.
         /// </summary>
         /// <param name="gameTime"></param>
-        protected void Move (GameTime gameTime)
+        protected void Move(GameTime gameTime)
         {
             // Calculate deltaTime based on the gameTime
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -69,16 +70,16 @@ namespace PirateGame
         /// changes to create its animation.
         /// </summary>
         /// <param name="gameTime"></param>
-        protected void Animation (GameTime gameTime)
+        protected void Animation(GameTime gameTime)
         {
             //add time that has passed since last update
             timeElapsed += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             // calculate the currrnet index
             currentIndex = (int)(timeElapsed * currentAnimation.FPS);
-            
+
             //check if the animation needs to restart
-            if(currentIndex >= currentAnimation.Sprites.Length && currentAnimation.IsLooping)
+            if (currentIndex >= currentAnimation.Sprites.Length && currentAnimation.IsLooping)
             {
                 //reset the animation
                 timeElapsed = 0;
@@ -132,19 +133,39 @@ namespace PirateGame
 
         }
 
+        public virtual void OnCollisionExit(GameObject other)
+        {
+
+        }
+
+        public virtual void OnCollisionEnter(GameObject other)
+        {
+
+        }
+
         /// <summary>
         /// "CheckCollsion" checks if there has been a collsion between objects.
         /// If a collision is found it will call on the "OnCollision" method.
         /// </summary>
         /// <param name="other"></param>
-        public void CheckCollision (GameObject other)
+        public void CheckCollision(GameObject other)
         {
-            if(collisionBox.Intersects(other.collisionBox) && other != this)
+            if (collisionBox.Intersects(other.collisionBox) && other != this && !collidingObjects.Contains(other))
+            {
+                OnCollisionEnter(other);
+                collidingObjects.Add(other);
+            }
+            else if (collisionBox.Intersects(other.collisionBox) && other != this)
             {
                 OnCollision(other);
             }
+            else if (collidingObjects.Contains(other))
+            {
+                OnCollisionExit(other);
+                collidingObjects.Remove(other);
+            }
         }
-        
+
         /// <summary>
         /// "TakeDamage" is called when an object with health
         /// collied with somthing that is suppose to damage it.

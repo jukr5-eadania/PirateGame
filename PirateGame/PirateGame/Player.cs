@@ -19,15 +19,23 @@ namespace PirateGame
         private float attackTime;
         private float maxAttackTime = 1.5f;
 
-        private bool onGround = true;
-        private float jumpTime;
-        private float maxJumpTime = 0.5f;
+        private bool onGround;
+        private float jumpPosition;
+        private float jumpHeight = 100;
         private bool isJumping;
 
         private int ammo = 5;
         private Texture2D bulletSprite;
 
         public Vector2 Position { get => position; }
+
+        public override Rectangle collisionBox
+        {
+            get
+            {
+                return new Rectangle((int)position.X - (int)origin.X, (int)position.Y - (int)origin.Y, sprite.Width, sprite.Height);
+            }
+        }
 
         public Player(Vector2 position)
         {
@@ -210,11 +218,6 @@ namespace PirateGame
             Animation(gameTime);
             isAlive();
 
-            if (isJumping)
-            {
-                jumpTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            }
-
             if (isAttacking)
             {
                 attackTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -241,18 +244,15 @@ namespace PirateGame
                     isHit = false;
                 }
             }
+
+            if (collidingObjects.Count == 0 && onGround == true)
+            {
+                onGround = false;
+            }
         }
 
         public override void OnCollision(GameObject other)
         {
-            if (other is WorldTile)
-            {
-                position.Y -= 1;
-                onGround = true;
-                velocity = Vector2.Zero;
-                jumpVelocity = Vector2.Zero;
-            }
-
             if (!isHit)
             {
                 if (other is Enemy && currentAnimation.Name == "pirate_atk1" || other is Enemy && currentAnimation.Name == "pirate_atk2" || other is Enemy && currentAnimation.Name == "pirate_atk3")
@@ -269,9 +269,24 @@ namespace PirateGame
             }
         }
 
+        public override void OnCollisionEnter(GameObject other)
+        {
+            if (other is WorldTile && onGround == false)
+            {
+                onGround = true;
+                isJumping = false;
+                velocity = Vector2.Zero;
+                jumpVelocity = Vector2.Zero;
+
+                Rectangle overlap = Rectangle.Intersect(other.collisionBox, collisionBox);
+
+                position.Y -= overlap.Height;
+
+            }
+        }
+
         public void HandleInput()
         {
-
             velocity = Vector2.Zero;
 
             KeyboardState keystate = Keyboard.GetState();
@@ -311,26 +326,24 @@ namespace PirateGame
                 Shoot();
             }
 
+            //Something in this breaks everything
+            //&& jumpPosition - jumpHeight >= position.Y
             if (!onGround)
             {
-                if (jumpTime >= maxJumpTime)
-                {
-                    PlayAnimation("pirate_fall");
-                    jumpVelocity += new Vector2(0, 1);
-                    isJumping = false;
-                }
+                PlayAnimation("pirate_fall");
+                jumpVelocity += new Vector2(0, 1);
             }
         }
 
         public void Jump()
         {
-            if (!isJumping)
+            if (!isJumping && onGround)
             {
-                jumpTime = 0;
+                jumpPosition = position.Y;
                 isJumping = true;
+                onGround = false;
                 PlayAnimation("pirate_jump");
                 jumpVelocity += new Vector2(0, -1);
-                onGround = false;
             }
         }
 
@@ -350,7 +363,6 @@ namespace PirateGame
             {
                 PlayAnimation("pirate_atk3");
             }
-
         }
 
         public void Shoot()
@@ -358,7 +370,8 @@ namespace PirateGame
             if (ammo <= 0)
             {
                 PlayAnimation("pirate_shoot_without_fire");
-            } else
+            }
+            else
             {
                 PlayAnimation("pirate_shoot");
                 ammo--;

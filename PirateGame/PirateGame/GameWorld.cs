@@ -11,7 +11,7 @@ namespace PirateGame
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private List<GameObject> gameObjects = new List<GameObject>();
-        private Player player = new Player(new Vector2(GameWorld.Width / 2, GameWorld.Height / 2));
+        private Player player = new Player(new Vector2(GameWorld.Width / 2, 325f));
         public static int Height { get; set; }
         public static int Width { get; set; }
         private Dictionary<Vector2, int> tiles;
