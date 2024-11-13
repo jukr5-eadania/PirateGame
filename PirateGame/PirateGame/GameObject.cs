@@ -21,14 +21,15 @@ namespace PirateGame
         protected SpriteEffects spriteEffects = SpriteEffects.None;
         protected Dictionary<string, Animation> animations = new Dictionary<string, Animation>();
         private int currentIndex; // Index of current frame
+        protected float timeElapsed; // time passed since frame changed
         protected float scale = 1;
-        private float timeElapsed; // time passed since frame changed
 
         // Properties
         public virtual Rectangle collisionBox
         {
             get
             {
+                // note : origin gets defined in "Draw"
                 return new Rectangle((int)position.X - (int)origin.X, (int)position.Y - (int)origin.Y, sprite.Width, sprite.Height);
             }
         }
@@ -43,7 +44,7 @@ namespace PirateGame
         /// "Draw" draws the sprite.
         /// </summary>
         /// <param name="spriteBatch"></param>
-        public void Draw (SpriteBatch spriteBatch)
+        public virtual void Draw (SpriteBatch spriteBatch)
         {       
             origin = new Vector2(sprite.Width / 2, sprite.Height / 2);
             spriteBatch.Draw(sprite, position, null, Color.White, 0, origin, scale, spriteEffects, 1);
