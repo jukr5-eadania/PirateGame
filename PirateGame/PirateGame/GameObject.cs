@@ -93,11 +93,16 @@ namespace PirateGame
                 //if the animation is only run once (IsLooping = false), the animation will be paused on its last frame
                 else if (currentIndex >= currentAnimation.Sprites.Length && !currentAnimation.IsLooping)
                 {
+                    //PlayAnimation("pirate_idle");
+                    timeElapsed = 0;
+                    currentIndex = 0;
+
+                }
+                else if(currentIndex >= currentAnimation.Sprites.Length && !currentAnimation.IsLooping && currentAnimation.PlayOnce)
+                {
+
                     pauseAnimation = true;
                     return;
-                    //PlayAnimation("pirate_idle");
-                    // timeElapsed = 0;
-                    // currentIndex = 0;
                 }
 
                 sprite = currentAnimation.Sprites[currentIndex];

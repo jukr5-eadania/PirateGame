@@ -45,7 +45,7 @@ namespace PirateGame
                 atk1[i] = content.Load<Texture2D>($"Pirate/Atk1/atk{i}");
             }
 
-            AddAnimation(new Animation(atk1, "pirate_atk1", 10, false));
+            AddAnimation(new Animation(atk1, "pirate_atk1", 10, false, false));
 
             //Loading atk2 sprites
             Texture2D[] atk2 = new Texture2D[6];
@@ -55,7 +55,7 @@ namespace PirateGame
                 atk2[i] = content.Load<Texture2D>($"Pirate/Atk2/atk{i}");
             }
 
-            AddAnimation(new Animation(atk2, "pirate_atk2", 10, false));
+            AddAnimation(new Animation(atk2, "pirate_atk2", 10, false, false));
 
             //Loading atk3 sprites
             Texture2D[] atk3 = new Texture2D[6];
@@ -65,7 +65,7 @@ namespace PirateGame
                 atk3[i] = content.Load<Texture2D>($"Pirate/Atk3/atk{i}");
             }
 
-            AddAnimation(new Animation(atk3, "pirate_atk3", 10, false));
+            AddAnimation(new Animation(atk3, "pirate_atk3", 10, false, false));
 
             //Loading death sprites
             Texture2D[] death = new Texture2D[4];
@@ -75,7 +75,7 @@ namespace PirateGame
                 death[i] = content.Load<Texture2D>($"Pirate/Death/death{i}");
             }
 
-            AddAnimation(new Animation(death, "pirate_death", 10, false));
+            AddAnimation(new Animation(death, "pirate_death", 10, false, false));
 
             //Loading fall sprite
             Texture2D[] fall = new Texture2D[1];
@@ -85,7 +85,7 @@ namespace PirateGame
                 fall[i] = content.Load<Texture2D>("Pirate/Fall/fall");
             }
 
-            AddAnimation(new Animation(fall, "pirate_fall", 10, true));
+            AddAnimation(new Animation(fall, "pirate_fall", 10, true, false));
 
             //Loading gun_in sprites
             Texture2D[] gun_in = new Texture2D[5];
@@ -95,7 +95,7 @@ namespace PirateGame
                 gun_in[i] = content.Load<Texture2D>($"Pirate/Gun_in/gun_in{i}");
             }
 
-            AddAnimation(new Animation(gun_in, "pirate_gun_in", 10, false));
+            AddAnimation(new Animation(gun_in, "pirate_gun_in", 10, false, false));
 
             //Loading gun_out sprites
             Texture2D[] gun_out = new Texture2D[6];
@@ -105,7 +105,7 @@ namespace PirateGame
                 gun_out[i] = content.Load<Texture2D>($"Pirate/Gun_Out/gun_out{i}");
             }
 
-            AddAnimation(new Animation(gun_out, "pirate_gun_out", 10, false));
+            AddAnimation(new Animation(gun_out, "pirate_gun_out", 10, false, false));
 
             //Loading hit sprites
             Texture2D[] hit = new Texture2D[3];
@@ -115,7 +115,7 @@ namespace PirateGame
                 hit[i] = content.Load<Texture2D>($"Pirate/Hit/hit{i}");
             }
 
-            AddAnimation(new Animation(hit, "pirate_hit", 10, false));
+            AddAnimation(new Animation(hit, "pirate_hit", 10, false, false));
 
             //Loading idle sprites
             Texture2D[] idle = new Texture2D[5];
@@ -125,7 +125,7 @@ namespace PirateGame
                 idle[i] = content.Load<Texture2D>($"Pirate/Idle/idle{i}");
             }
 
-            AddAnimation(new Animation(idle, "pirate_idle", 10, true));
+            AddAnimation(new Animation(idle, "pirate_idle", 10, true, false));
 
             //Loading jump sprites
             Texture2D[] jump = new Texture2D[2];
@@ -135,7 +135,7 @@ namespace PirateGame
                 jump[i] = content.Load<Texture2D>($"Pirate/Jump/jump{i}");
             }
 
-            AddAnimation(new Animation(jump, "pirate_jump", 4, false));
+            AddAnimation(new Animation(jump, "pirate_jump", 4, false, false));
 
             //Loading jump_dust sprites
             Texture2D[] jump_dust = new Texture2D[3];
@@ -145,7 +145,7 @@ namespace PirateGame
                 jump_dust[i] = content.Load<Texture2D>($"Pirate/Jump_Dust/jump_dust{i}");
             }
 
-            AddAnimation(new Animation(jump_dust, "pirate_jump_dust", 10, false));
+            AddAnimation(new Animation(jump_dust, "pirate_jump_dust", 10, false, false));
 
             //Loading land sprites
             Texture2D[] land = new Texture2D[2];
@@ -155,7 +155,7 @@ namespace PirateGame
                 land[i] = content.Load<Texture2D>($"Pirate/Land/land{i}");
             }
 
-            AddAnimation(new Animation(land, "pirate_land", 10, false));
+            AddAnimation(new Animation(land, "pirate_land", 10, false, false));
 
             //Loading land_dust sprites
             Texture2D[] land_dust = new Texture2D[6];
@@ -165,7 +165,7 @@ namespace PirateGame
                 land_dust[i] = content.Load<Texture2D>($"Pirate/Land_Dust/land_dust{i}");
             }
 
-            AddAnimation(new Animation(land_dust, "pirate_land_dust", 10, false));
+            AddAnimation(new Animation(land_dust, "pirate_land_dust", 10, false, false));
 
             //Loading run sprites
             Texture2D[] run = new Texture2D[6];
@@ -175,7 +175,7 @@ namespace PirateGame
                 run[i] = content.Load<Texture2D>($"Pirate/Run/run{i}");
             }
 
-            AddAnimation(new Animation(run, "pirate_run", 10, true));
+            AddAnimation(new Animation(run, "pirate_run", 10, true, false));
 
             //Loading shoot sprites
             Texture2D[] shoot = new Texture2D[5];
@@ -185,7 +185,7 @@ namespace PirateGame
                 shoot[i] = content.Load<Texture2D>($"Pirate/Shoot/shoot{i}");
             }
 
-            AddAnimation(new Animation(shoot, "pirate_shoot", 10, false));
+            AddAnimation(new Animation(shoot, "pirate_shoot", 10, false, false));
 
             //Loading shoot_without_fire sprites
             Texture2D[] shoot_without_fire = new Texture2D[5];
@@ -195,7 +195,7 @@ namespace PirateGame
                 shoot_without_fire[i] = content.Load<Texture2D>($"Pirate/Shoot_Without_Fire/shoot_without_fire{i}");
             }
 
-            AddAnimation(new Animation(shoot_without_fire, "shoot_without_fire", 10, false));
+            AddAnimation(new Animation(shoot_without_fire, "shoot_without_fire", 10, false, false));
 
             PlayAnimation("pirate_idle");
         }

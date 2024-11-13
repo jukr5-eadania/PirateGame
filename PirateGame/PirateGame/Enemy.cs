@@ -44,7 +44,7 @@ namespace PirateGame
         // Methods //
         public Enemy()
         {
-            health = 10;
+            health = 0;
             position = new Vector2(GameWorld.Width-550, (GameWorld.Height / 4)+20);
             scale = 1.2f;
 
@@ -85,11 +85,11 @@ namespace PirateGame
 
             //creating the animation in the AddAnimation method in GameObject (class)
             //witch then adds them to the animation list
-            AddAnimation(new Animation(idle, "skeleton_idle", 6, true));
-            AddAnimation(new Animation(walk, "skeleton_walk", 6, true));
-            AddAnimation(new Animation(attack, "skeleton_attack", 8, false));
-            AddAnimation(new Animation(hurt, "skeleton_hurt", 6, false));
-            AddAnimation(new Animation(die, "skeleton_die", 6, false));
+            AddAnimation(new Animation(idle, "skeleton_idle", 6, true, false));
+            AddAnimation(new Animation(walk, "skeleton_walk", 6, true, false));
+            AddAnimation(new Animation(attack, "skeleton_attack", 8, false, false));
+            AddAnimation(new Animation(hurt, "skeleton_hurt", 6, false, false));
+            AddAnimation(new Animation(die, "skeleton_die", 6, false, true));
 
             // Default animation
             PlayAnimation("skeleton_idle");
