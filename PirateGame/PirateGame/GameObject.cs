@@ -23,6 +23,7 @@ namespace PirateGame
         private int currentIndex; // Index of current frame
         protected float timeElapsed; // time passed since frame changed
         protected float scale = 1;
+        private bool pauseAnimation = false;
 
         // Properties //
         public virtual Rectangle collisionBox
@@ -73,28 +74,34 @@ namespace PirateGame
         /// <param name="gameTime"></param>
         protected void Animation (GameTime gameTime)
         {
-            //add time that has passed since last update
-            timeElapsed += (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            // calculate the currrnet index
-            currentIndex = (int)(timeElapsed * currentAnimation.FPS);
-            
-            //check if the animation needs to restart
-            if(currentIndex >= currentAnimation.Sprites.Length && currentAnimation.IsLooping)
+            if (!pauseAnimation)
             {
-                //reset the animation
-                timeElapsed = 0;
-                currentIndex = 0;
-            }
-            else if (currentIndex >= currentAnimation.Sprites.Length && !currentAnimation.IsLooping)
-            {
-                
-                PlayAnimation("pirate_idle");
-                timeElapsed = 0;
-                currentIndex = 0;
+                //add time that has passed since last update
+                timeElapsed += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                // calculate the currrnet index
+                currentIndex = (int)(timeElapsed * currentAnimation.FPS);
+
+                //check if the animation needs to restart
+                if (currentIndex >= currentAnimation.Sprites.Length && currentAnimation.IsLooping)
+                {
+                    //reset the animation
+                    timeElapsed = 0;
+                    currentIndex = 0;
+
+                }
+                else if (currentIndex >= currentAnimation.Sprites.Length && !currentAnimation.IsLooping)
+                {
+                    pauseAnimation = true;
+                    return;
+                    //PlayAnimation("pirate_idle");
+                    // timeElapsed = 0;
+                    // currentIndex = 0;
+                }
+
+                sprite = currentAnimation.Sprites[currentIndex];
             }
 
-            sprite = currentAnimation.Sprites[currentIndex];
         }
 
         /// <summary>
@@ -108,6 +115,7 @@ namespace PirateGame
                 currentAnimation = animations[animationName];
                 timeElapsed = 0;
                 currentIndex = 0;
+                pauseAnimation = false;
             }
         }
 

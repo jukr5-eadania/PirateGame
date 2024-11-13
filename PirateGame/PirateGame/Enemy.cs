@@ -45,7 +45,7 @@ namespace PirateGame
         public Enemy()
         {
             health = 10;
-            position = new Vector2(GameWorld.Width / 2, GameWorld.Height / 4);
+            position = new Vector2(GameWorld.Width-550, GameWorld.Height / 4);
             scale = 1.2f;
 
         }
@@ -97,6 +97,7 @@ namespace PirateGame
             sprite = currentAnimation.Sprites[0];
         }
 
+
         /// <summary>
         /// When player collides with the enemy's attackBox the enemy will attack
         /// </summary>
@@ -137,8 +138,8 @@ namespace PirateGame
             {
                 patrol = false;
                 PlayAnimation("skeleton_die");
-                
-                if (pauseDeath >= 3f) // Note: see pauseDeath in Update
+                                
+                if (pauseDeath >= 10f) // Note: see pauseDeath in Update
                 {
                     GameWorld.RemoveObjects.Add(this);
                 }
@@ -175,8 +176,8 @@ namespace PirateGame
         {
 
             this.speed = 2;
-            int wp1 = 600; // wp1 is the point towards the left
-            int wp2 = 800; // wp2 is the point towards the right
+            int wp1 = 1000; // wp1 is the point towards the left
+            int wp2 = 1350; // wp2 is the point towards the right
 
             if (patrol == true)
             {
