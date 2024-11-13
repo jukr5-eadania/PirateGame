@@ -10,7 +10,7 @@ namespace PirateGame
     /// </summary>
     abstract class GameObject
     {
-        // Field
+        // Field //
         protected Texture2D sprite;
         protected Vector2 velocity;
         protected Vector2 jumpVelocity;
@@ -24,7 +24,7 @@ namespace PirateGame
         protected float timeElapsed; // time passed since frame changed
         protected float scale = 1;
 
-        // Properties
+        // Properties //
         public virtual Rectangle collisionBox
         {
             get
@@ -36,7 +36,7 @@ namespace PirateGame
         public virtual Rectangle attackBox { get; }
         
 
-        // Methods
+        // Methods //
         public abstract void LoadContent(ContentManager content);
         public abstract void Update(GameTime gameTime);
        
@@ -142,10 +142,10 @@ namespace PirateGame
         /// <param name="other"></param>
         public void CheckCollision (GameObject other)
         {
-            /*if(collisionBox.Intersects(other.collisionBox)&& other != this)
+            if(collisionBox.Intersects(other.collisionBox)&& other != this)
             {
                 OnCollision(other);
-            }*/
+            }
 
             if (attackBox.Intersects(other.collisionBox) && other != this)
             {

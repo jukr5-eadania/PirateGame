@@ -9,7 +9,7 @@ namespace PirateGame
 {
     public class GameWorld : Game
     {
-        // Field
+        // Field //
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private List<GameObject> gameObjects = new List<GameObject>();
@@ -28,11 +28,11 @@ namespace PirateGame
 
         
 
-        // Properties
+        // Properties //
         internal static List<GameObject> RemoveObjects { get => removeObjects; set => removeObjects = value; }
         
          
-        // Methods
+        // Methods //
 
         
         public GameWorld()
@@ -55,6 +55,7 @@ namespace PirateGame
             bg = new Background();
             gameObjects.Add(player);
             gameObjects.Add(new Coin(new Vector2(GameWorld.Width/2, GameWorld.Height/2)));
+           
             gameObjects.Add(new Enemy());
             
            
@@ -90,11 +91,18 @@ namespace PirateGame
             {
                 gameObject.Update(gameTime);
                 
-                /*foreach (GameObject other in gameObjects)
+                foreach (GameObject other in gameObjects)
                 {
                     gameObject.CheckCollision(other);
-                }*/
+                }
             }
+
+            foreach (GameObject gameObject in RemoveObjects)
+            {
+                gameObjects.Remove(gameObject);
+
+            }
+            RemoveObjects.Clear();
 
             foreach (GameObject atkBox in gameObjects)
             {
@@ -106,12 +114,6 @@ namespace PirateGame
                 }
             }
 
-            foreach (GameObject gameObject in RemoveObjects)
-            {
-                gameObjects.Remove(gameObject);
-
-            }
-            RemoveObjects.Clear();
 
 
             // Replace vector zero with cameras target

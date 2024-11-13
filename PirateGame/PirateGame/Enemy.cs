@@ -16,7 +16,7 @@ namespace PirateGame
     /// </summary>
     internal class Enemy : GameObject
     {
-        // Field        
+        // Field //     
         private int health;
         private bool goLeft = true; // For when the enemy needs to go left
         private bool pause = true; // For when the enemy needs to pause
@@ -29,7 +29,7 @@ namespace PirateGame
         private float pauseDeath; // The pause between when it dies and when it disappear (gets deleted)
 
 
-        // Properties
+        // Properties //
               
         
         // The collision box for when hitting the player / doing damage
@@ -41,7 +41,7 @@ namespace PirateGame
             }
         }
 
-        // Methods
+        // Methods //
         public Enemy()
         {
             health = 10;
@@ -91,6 +91,10 @@ namespace PirateGame
             AddAnimation(new Animation(hurt, "skeleton_hurt", 6, false));
             AddAnimation(new Animation(die, "skeleton_die", 6, false));
 
+            // Default animation
+            PlayAnimation("skeleton_idle");
+
+            sprite = currentAnimation.Sprites[0];
         }
 
         /// <summary>

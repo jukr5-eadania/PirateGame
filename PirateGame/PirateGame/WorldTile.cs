@@ -14,6 +14,12 @@ namespace PirateGame
         Texture2D textureAtlas;
         Rectangle destinationRectange;
         Rectangle source;
+
+        public override Rectangle collisionBox
+        {
+            get => destinationRectange;
+        }
+
         public WorldTile(Texture2D textureAtlas,Rectangle destinationRectange,Rectangle source)
         {
             this.textureAtlas = textureAtlas;
@@ -27,6 +33,7 @@ namespace PirateGame
         }
         public override void LoadContent(ContentManager content)
         {
+
         }
 
         public override void Update(GameTime gameTime)
