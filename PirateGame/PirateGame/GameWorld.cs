@@ -13,7 +13,7 @@ namespace PirateGame
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private List<GameObject> gameObjects = new List<GameObject>();
-        private Player player = new Player(new Vector2(GameWorld.Width / 2, GameWorld.Height / 2));
+        private Player player = new Player(new Vector2(GameWorld.Width / 2, GameWorld.Height/2));
         private Texture2D collisionTexture;
         private static List<GameObject> removeObjects = new List<GameObject>();
         public static int Height { get; set; }

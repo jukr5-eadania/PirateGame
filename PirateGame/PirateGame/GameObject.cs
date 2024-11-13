@@ -90,6 +90,7 @@ namespace PirateGame
                     currentIndex = 0;
 
                 }
+                //if the animation is only run once (IsLooping = false), the animation will be paused on its last frame
                 else if (currentIndex >= currentAnimation.Sprites.Length && !currentAnimation.IsLooping)
                 {
                     pauseAnimation = true;
