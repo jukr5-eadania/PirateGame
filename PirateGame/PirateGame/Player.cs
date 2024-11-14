@@ -31,10 +31,7 @@ namespace PirateGame
         private int ammo = 5;
         private Texture2D bulletSprite;
 
-        /// <summary>
-        /// The proterty for getting the players position (Mainly used for the camera to follow the player
-        /// </summary>
-        public Vector2 Position { get => position; }
+
 
         /// <summary>
         /// Constructor used to set speed of player
@@ -42,7 +39,7 @@ namespace PirateGame
         /// <param name="position">Used to set start position of player when first initialised</param>
         public Player(Vector2 position)
         {
-            this.position = position;
+            this.Position = position;
             speed = 200;
         }
 
@@ -351,7 +348,7 @@ namespace PirateGame
 
             //Something in this breaks everything
             //&& jumpPosition - jumpHeight >= position.Y
-            if ((!onGround && jumpPosition - jumpHeight >= position.Y) || (!onGround && !isJumping))
+            if ((!onGround && jumpPosition - jumpHeight >= base.Position.Y) || (!onGround && !isJumping))
             {
                 PlayAnimation("pirate_fall");
                 jumpVelocity += new Vector2(0, 1);
@@ -365,7 +362,7 @@ namespace PirateGame
         {
             if (onGround || !isJumping)
             {
-                jumpPosition = position.Y;
+                jumpPosition = base.Position.Y;
                 isJumping = true;
                 onGround = false;
                 PlayAnimation("pirate_jump");
@@ -407,7 +404,7 @@ namespace PirateGame
             {
                 PlayAnimation("pirate_shoot");
                 ammo--;
-                Bullet firedBullet = new Bullet(bulletSprite, position);
+                Bullet firedBullet = new Bullet(bulletSprite, base.Position);
                 GameWorld.InstatiateGameObject(firedBullet);
             }
         }

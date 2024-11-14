@@ -30,9 +30,11 @@ namespace PirateGame
             get
             {
                 // note : origin gets defined in "Draw"
-                return new Rectangle((int)position.X - (int)origin.X, (int)position.Y - (int)origin.Y, sprite.Width, sprite.Height);
+                return new Rectangle((int)Position.X - (int)origin.X, (int)Position.Y - (int)origin.Y, sprite.Width, sprite.Height);
             }
         }
+
+        public Vector2 Position { get => position; set => position = value; }
 
         // Methods
 
@@ -46,7 +48,7 @@ namespace PirateGame
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             origin = new Vector2(sprite.Width / 2, sprite.Height / 2);
-            spriteBatch.Draw(sprite, position, null, Color.White, 0, origin, 1, spriteEffects, 1);
+            spriteBatch.Draw(sprite, Position, null, Color.White, 0, origin, 1, spriteEffects, 1);
         }
 
         /// <summary>
@@ -60,9 +62,9 @@ namespace PirateGame
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             //Move the object
-            position += ((velocity * speed) * deltaTime);
+            Position += ((velocity * speed) * deltaTime);
 
-            position += ((jumpVelocity * speed) * deltaTime);
+            Position += ((jumpVelocity * speed) * deltaTime);
         }
 
         /// <summary>

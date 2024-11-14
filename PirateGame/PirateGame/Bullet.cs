@@ -9,7 +9,7 @@ namespace PirateGame
         public Bullet(Texture2D sprite, Vector2 position)
         {
             this.sprite = sprite;
-            this.position = position;
+            this.Position = position;
             velocity = new Vector2(1, 0);
             speed = 300;
         }
