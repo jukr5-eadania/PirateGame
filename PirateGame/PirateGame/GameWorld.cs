@@ -96,16 +96,6 @@ namespace PirateGame
                 }
             }
 
-            foreach (GameObject atkBox in gameObjects)
-            {
-                atkBox.Update(gameTime);
-                foreach (GameObject other in gameObjects)
-                {
-                    atkBox.CheckCollision(other);
-
-                }
-            }
-
             foreach (GameObject gameObjectToSpawn in gameObjectsToAdd)
             {
                 gameObjectToSpawn.LoadContent(Content);

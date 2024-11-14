@@ -280,7 +280,6 @@ namespace PirateGame
                     PlayAnimation("pirate_hit");
                     health--;
                     isHit = true;
-
                 }
             }
         }
