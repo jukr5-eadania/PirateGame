@@ -302,7 +302,12 @@ namespace PirateGame
                 Rectangle overlap = Rectangle.Intersect(other.collisionBox, collisionBox);
 
                 position.Y -= overlap.Height;
+            }
 
+            if (other is Coin)
+            {
+                coin++;
+                GameWorld.RemoveGameObject(other);
             }
         }
 
