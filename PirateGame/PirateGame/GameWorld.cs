@@ -10,13 +10,16 @@ namespace PirateGame
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        private SpriteFont UIFont;
+        private Background bg;
         private List<GameObject> gameObjects = new List<GameObject>();
         private Player player = new Player(new Vector2(GameWorld.Width / 2, 325f));
         public static int Height { get; set; }
         public static int Width { get; set; }
         private Dictionary<Vector2, int> tiles;
+        // 
         private Texture2D textureAtlas;
-        private Rectangle destinationRectange;
+        // Matrix used to move camera with player
         private Matrix _translation;
         private static List<GameObject> gameObjectsToAdd = new List<GameObject>();
         private static List<GameObject> gameObjectsToRemove = new List<GameObject>();
@@ -39,7 +42,9 @@ namespace PirateGame
         {
             GameWorld.Height = _graphics.PreferredBackBufferHeight;
             GameWorld.Width = _graphics.PreferredBackBufferWidth;
+            bg = new Background();
             gameObjects.Add(player);
+            gameObjects.Add(new Coin(new Vector2(GameWorld.Width/2, GameWorld.Height/2)));
             base.Initialize();
         }
 
@@ -51,11 +56,16 @@ namespace PirateGame
             {
                 gameObject.LoadContent(Content);
             }
+
+            bg.LoadContent(Content);
+
             textureAtlas = Content.Load<Texture2D>("Tiles");
             tiles = LoadMap("../../../Content/Map/TestMap.csv");
             AddTiles(tiles);
 
             collisionTexture = Content.Load<Texture2D>("CollisionTexture");
+
+            UIFont = Content.Load<SpriteFont>("UIFont");
         }
 
         protected override void Update(GameTime gameTime)
@@ -104,6 +114,8 @@ namespace PirateGame
 
             _spriteBatch.Begin(transformMatrix: _translation);
 
+            bg.Draw(_spriteBatch);
+
             foreach (GameObject gameObject in gameObjects)
             {
                 gameObject.Draw(_spriteBatch);
@@ -112,6 +124,9 @@ namespace PirateGame
                 DrawCollisionBox(gameObject);
 #endif
             }
+            _spriteBatch.DrawString(UIFont, "Health: " + player.Health, new Vector2((float)(player.Position.X - GameWorld.Width / 2), (float)(player.Position.Y - GameWorld.Height / 2)), Color.Black);
+            _spriteBatch.DrawString(UIFont, "Coins: " + player.Coin, new Vector2((float)(player.Position.X - GameWorld.Width / 2), (float)(player.Position.Y - GameWorld.Height / 2) + 15), Color.Black);
+            _spriteBatch.DrawString(UIFont, "Ammo: " + player.Ammo, new Vector2((float)(player.Position.X - GameWorld.Width / 2), (float)(player.Position.Y - GameWorld.Height / 2) + 30), Color.Black);
             _spriteBatch.End();
 
             base.Draw(gameTime);
@@ -156,7 +171,7 @@ namespace PirateGame
                 int numTilesPerRow = 6;
                 int pixelTilesize = 32;
 
-                destinationRectange = new((int)item.Key.X * displayTilesize, (int)item.Key.Y * displayTilesize, displayTilesize, displayTilesize);
+                Rectangle destinationRectange = new((int)item.Key.X * displayTilesize, (int)item.Key.Y * displayTilesize, displayTilesize, displayTilesize);
 
                 int x = item.Value % numTilesPerRow;
                 int y = item.Value / numTilesPerRow;

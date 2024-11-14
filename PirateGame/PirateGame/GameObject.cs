@@ -23,6 +23,7 @@ namespace PirateGame
         private int currentIndex; // Index of current frame
         protected float timeElapsed; // time passed since frame changed
         protected List<GameObject> collidingObjects = new List<GameObject>();
+        protected float scale = 1;
 
         // Properties
         public virtual Rectangle collisionBox
@@ -48,7 +49,7 @@ namespace PirateGame
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             origin = new Vector2(sprite.Width / 2, sprite.Height / 2);
-            spriteBatch.Draw(sprite, Position, null, Color.White, 0, origin, 1, spriteEffects, 1);
+            spriteBatch.Draw(sprite, position, null, Color.White, 0, origin, scale, spriteEffects, 1);
         }
 
         /// <summary>

@@ -17,6 +17,8 @@ namespace PirateGame
         private float invincibleTime;
         private float maxInvincibleTime = 2f;
         private bool isHit;
+        private int coin;
+        private int ammo;
 
         private int combo;
         private bool isAttacking;
@@ -28,6 +30,10 @@ namespace PirateGame
         private float jumpHeight = 100;
         private bool isJumping;
 
+        public Vector2 Position { get => position; }
+        public int Health { get => health; set => health = value; }
+        public int Coin { get => coin; set => coin = value; }
+        public int Ammo { get => ammo; set => ammo = value; }
         private int ammo = 5;
         private Texture2D bulletSprite;
 
