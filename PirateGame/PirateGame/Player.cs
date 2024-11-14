@@ -6,34 +6,51 @@ using System;
 
 namespace PirateGame
 {
+    /// <summary>
+    /// Player class that controls and keeps track of the player.
+    /// The class is a child of GameObject
+    /// </summary>
     internal class Player : GameObject
     {
         private int health = 3;
         private int damage;
+        private float invincibleTime;
+        private float maxInvincibleTime = 2f;
+        private bool isHit;
         private int coin;
-        private int ammo;
+        private int ammo = 5;
+        private Texture2D bulletSprite;
 
         private int combo;
         private bool isAttacking;
         private float attackTime;
         private float maxAttackTime = 1.5f;
 
-        private bool onGround = true;
-        private float jumpTime;
-        private float maxJumpTime = 0.5f;
+        private bool onGround;
+        private float jumpPosition;
+        private float jumpHeight = 100;
         private bool isJumping;
 
-        public Vector2 Position { get => position; }
         public int Health { get => health; set => health = value; }
         public int Coin { get => coin; set => coin = value; }
         public int Ammo { get => ammo; set => ammo = value; }
 
+
+
+        /// <summary>
+        /// Constructor used to set speed of player
+        /// </summary>
+        /// <param name="position">Used to set start position of player when first initialised</param>
         public Player(Vector2 position)
         {
-            this.position = position;
+            this.Position = position;
             speed = 200;
         }
 
+        /// <summary>
+        /// Loads all sprites of the player
+        /// </summary>
+        /// <param name="content"></param>
         public override void LoadContent(ContentManager content)
         {
 
@@ -195,23 +212,25 @@ namespace PirateGame
                 shoot_without_fire[i] = content.Load<Texture2D>($"Pirate/Shoot_Without_Fire/shoot_without_fire{i}");
             }
 
-            AddAnimation(new Animation(shoot_without_fire, "shoot_without_fire", 10, false));
+            AddAnimation(new Animation(shoot_without_fire, "pirate_shoot_without_fire", 10, false));
 
             PlayAnimation("pirate_idle");
+
+            bulletSprite = content.Load<Texture2D>("Pirate/bullet0");
         }
 
+        /// <summary>
+        /// The main loop of the player
+        /// </summary>
+        /// <param name="gameTime">Takes a GameTime that provides the timespan since last call to update</param>
         public override void Update(GameTime gameTime)
         {
             HandleInput();
             Move(gameTime);
             Animation(gameTime);
+            isAlive();
 
-            if (isJumping == true)
-            {
-                jumpTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            }
-
-            if (isAttacking == true)
+            if (isAttacking)
             {
                 attackTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
@@ -227,16 +246,76 @@ namespace PirateGame
             {
                 PlayAnimation("pirate_idle");
             }
+
+            if (isHit)
+            {
+                invincibleTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                if (invincibleTime >= maxInvincibleTime)
+                {
+                    isHit = false;
+                }
+            }
+
+            if (collidingObjects.Count == 0 && onGround == true)
+            {
+                onGround = false;
+            }
         }
 
+        /// <summary>
+        /// Decides what happens when player collides with another gameobject
+        /// </summary>
+        /// <param name="other">name for the other gameobject the player collides with</param>
         public override void OnCollision(GameObject other)
         {
+            if (!isHit)
+            {
+                if (other is Enemy && currentAnimation.Name == "pirate_atk1" || other is Enemy && currentAnimation.Name == "pirate_atk2" || other is Enemy && currentAnimation.Name == "pirate_atk3")
+                {
 
+                }
+                else if (other is Enemy)
+                {
+                    PlayAnimation("pirate_hit");
+                    health--;
+                    isHit = true;
+
+                }
+            }
         }
 
+        /// <summary>
+        /// Decides what happens when a player first collides with an object. This only happens on the first collsion with a gameobject
+        /// Will only trigger again if the player collides with the gameobject again after the player has left the gameobjects collision
+        /// </summary>
+        /// <param name="other">name for the other gameobject the player collides with</param>
+        public override void OnCollisionEnter(GameObject other)
+        {
+            if (other is WorldTile && onGround == false)
+            {
+                onGround = true;
+                isJumping = false;
+                velocity = Vector2.Zero;
+                jumpVelocity = Vector2.Zero;
+
+                Rectangle overlap = Rectangle.Intersect(other.collisionBox, collisionBox);
+
+                position.Y -= overlap.Height;
+            }
+
+            if (other is Coin)
+            {
+                coin++;
+                GameWorld.RemoveGameObject(other);
+            }
+        }
+
+        /// <summary>
+        /// Is in charge of the input of the player
+        /// </summary>
         public void HandleInput()
         {
-
             velocity = Vector2.Zero;
 
             KeyboardState keystate = Keyboard.GetState();
@@ -261,7 +340,7 @@ namespace PirateGame
                 }
             }
 
-            if (keystate.IsKeyDown(Keys.Space) && onGround && currentAnimation.IsLooping)
+            if (keystate.IsKeyDown(Keys.Space))
             {
                 Jump();
             }
@@ -276,28 +355,33 @@ namespace PirateGame
                 Shoot();
             }
 
-            if (!onGround)
+            //Something in this breaks everything
+            //&& jumpPosition - jumpHeight >= position.Y
+            if ((!onGround && jumpPosition - jumpHeight >= base.Position.Y) || (!onGround && !isJumping))
             {
-                if (jumpTime >= maxJumpTime)
-                {
-                    PlayAnimation("pirate_fall");
-                    jumpVelocity += new Vector2(0, 1);
-                    isJumping = false;
-                }
+                PlayAnimation("pirate_fall");
+                jumpVelocity += new Vector2(0, 1);
             }
         }
 
+        /// <summary>
+        /// Controls what happens when the player jumps
+        /// </summary>
         public void Jump()
         {
-            if (!isJumping)
+            if (onGround || !isJumping)
             {
+                jumpPosition = base.Position.Y;
                 isJumping = true;
+                onGround = false;
                 PlayAnimation("pirate_jump");
                 jumpVelocity += new Vector2(0, -1);
-                onGround = false;
             }
         }
 
+        /// <summary>
+        /// Controls what happens when the player attacks
+        /// </summary>
         public void Attack()
         {
             isAttacking = true;
@@ -314,14 +398,41 @@ namespace PirateGame
             {
                 PlayAnimation("pirate_atk3");
             }
-            
         }
 
+        /// <summary>
+        /// Controls what happens when the player shoots
+        /// </summary>
         public void Shoot()
         {
-            PlayAnimation("pirate_gun_out");
-            PlayAnimation("pirate_shoot");
-            PlayAnimation("pirate_gun_in");
+            if (ammo <= 0)
+            {
+                PlayAnimation("pirate_shoot_without_fire");
+            }
+            else
+            {
+                PlayAnimation("pirate_shoot");
+                ammo--;
+                Bullet firedBullet = new Bullet(bulletSprite, base.Position);
+                GameWorld.InstatiateGameObject(firedBullet);
+            }
+        }
+
+        /// <summary>
+        /// Checks if the player is alive
+        /// </summary>
+        /// <returns>true if the player health is above 0, false if the player health is below 0</returns>
+        public bool isAlive()
+        {
+            if (health <= 0)
+            {
+                PlayAnimation("pirate_death");
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
     }
 }

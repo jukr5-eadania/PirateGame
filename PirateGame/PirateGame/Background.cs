@@ -29,8 +29,8 @@ namespace PirateGame
 
             for (int i = 0; i < 10; i++)
             {
-                position = new Vector2(-sprite.Width + sprite.Width * i, 0);
-                spriteBatch.Draw(sprite, position, null, Color.White, 0, origin, 1, SpriteEffects.None, 1);
+                position = new Vector2(-sprite.Width + sprite.Width * i, 355);
+                spriteBatch.Draw(sprite, position, null, Color.White, 0, origin, 1, SpriteEffects.None, 0);
             }
         }
     }

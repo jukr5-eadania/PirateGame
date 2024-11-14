@@ -19,11 +19,13 @@ namespace PirateGame
         {
             get => destinationRectange;
         }
+
         public WorldTile(Texture2D textureAtlas,Rectangle destinationRectange,Rectangle source)
         {
             this.textureAtlas = textureAtlas;
             this.destinationRectange = destinationRectange;
             this.source = source;
+
         }
 
         public override void Draw(SpriteBatch spriteBatch)
