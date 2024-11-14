@@ -97,7 +97,7 @@ namespace PirateGame
                     OnAnimationDone(currentAnimation.Name);
 
                 }  
-                // if the animation is only run once (PlayOnce = true), the animation will stop on its last frame
+                // if the animation is only run once (pauseAnimation = true), the animation will stop on its last frame
                 else if (currentIndex >= currentAnimation.Sprites.Length && !currentAnimation.IsLooping)
                 {
 

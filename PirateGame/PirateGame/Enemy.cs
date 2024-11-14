@@ -19,7 +19,7 @@ namespace PirateGame
         // Field //     
         private int health;
         private bool goLeft = true; // For when the enemy needs to go left
-        private bool pause = true; // For when the enemy needs to pause
+        private bool pausePatrol = true; // For when the enemy needs to pause in its patrol
         private bool patrol = true; // For when switching between patroling and attacking
         private float timeElaps;
         private int attackDamage;
@@ -44,8 +44,8 @@ namespace PirateGame
         // Methods //
         public Enemy()
         {
-            health = 0;
-            position = new Vector2(GameWorld.Width - 1000, (GameWorld.Height / 4) + 20);
+            health = 10;
+            position = new Vector2(GameWorld.Width - 550, (GameWorld.Height / 4) + 20);
             scale = 1.2f;
 
         }
@@ -201,22 +201,22 @@ namespace PirateGame
             {
                 // The enemy pause for 1sec before contenuing to walk. 
                 // This is done by checking if enemy pauses (if pause is true) 
-                if (pause == true)
+                if (pausePatrol == true)
                 {
                     PlayAnimation("skeleton_idle");
                     timeElaps += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
                     if (timeElaps >= 1)
                     {
-                        pause = false;
+                        pausePatrol = false;
                         timeElaps = 0;
                     }
                 }
 
 
-                // After having paused pause will now be false in order to let it walk.
+                // After having paused pausePatrol will now be false in order to let it walk.
                 // When enemy has reached its waypoint it will pause again (pause set to true)
-                if (pause == false)
+                if (pausePatrol == false)
                 {
                     // When the enemy walks left goLeft will be set to true
                     if (goLeft)
@@ -226,14 +226,14 @@ namespace PirateGame
                         spriteEffects = SpriteEffects.FlipHorizontally;
 
                         // When the enemy hits wp1 it will set goLeft to false so it now can 
-                        // go right. Its new position.X will be set to wp1 as a precaution.
-                        // Finally we set pause to true so it will stand stil for 1sec before continuing
+                        // go right. Its new position.X will be set to wp1.
+                        // Finally we set pausePatrol to true so it will stand stil for 1sec before continuing
                         if (position.X <= wp1)
                         {
 
                             goLeft = false;
                             position.X = wp1;
-                            pause = true;
+                            pausePatrol = true;
                         }
 
                     }
@@ -244,15 +244,15 @@ namespace PirateGame
                         PlayAnimation("skeleton_walk"); // run the walk animation
                         spriteEffects = SpriteEffects.None;
 
-                        //Basically the same as in the goLeft part, but goLeft gets set to true,
-                        // position.X is set to wp2 and once more pause will be set to true in order to 
+                        // Basically the same as in the goLeft part, but goLeft gets set to true,
+                        // position.X is set to wp2 and once more pausePatrol will be set to true in order to 
                         // pause the enemy before continuing
                         if (position.X >= wp2)
                         {
 
                             goLeft = true;
                             position.X = wp2;
-                            pause = true;
+                            pausePatrol = true;
                         }
 
                     }
