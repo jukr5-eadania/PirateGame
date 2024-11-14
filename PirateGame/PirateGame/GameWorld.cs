@@ -17,7 +17,6 @@ namespace PirateGame
         private List<GameObject> gameObjects = new List<GameObject>();
         private Player player = new Player(new Vector2(GameWorld.Width / 2, 325f));
         private Texture2D collisionTexture;
-        private static List<GameObject> removeObjects = new List<GameObject>();
         public static int Height { get; set; }
         public static int Width { get; set; }
         private Dictionary<Vector2, int> tiles;
@@ -27,12 +26,6 @@ namespace PirateGame
         private Matrix _translation;
         private static List<GameObject> gameObjectsToAdd = new List<GameObject>();
         private static List<GameObject> gameObjectsToRemove = new List<GameObject>();
-        private Texture2D collisionTexture;
-
-        
-
-        // Properties //
-        internal static List<GameObject> RemoveObjects { get => removeObjects; set => removeObjects = value; }
         
          
         // Methods //
@@ -103,13 +96,6 @@ namespace PirateGame
                 }
             }
 
-            foreach (GameObject gameObject in RemoveObjects)
-            {
-                gameObjects.Remove(gameObject);
-
-            }
-            RemoveObjects.Clear();
-
             foreach (GameObject atkBox in gameObjects)
             {
                 atkBox.Update(gameTime);
@@ -120,7 +106,18 @@ namespace PirateGame
                 }
             }
 
+            foreach (GameObject gameObjectToSpawn in gameObjectsToAdd)
+            {
+                gameObjectToSpawn.LoadContent(Content);
+                gameObjects.Add(gameObjectToSpawn);
+            }
+            gameObjectsToAdd.Clear();
 
+            foreach (GameObject gameObjectToDespawn in gameObjectsToRemove)
+            {
+                gameObjects.Remove(gameObjectToDespawn);
+            }
+            gameObjectsToRemove.Clear();
 
             // Replace vector zero with cameras target
             CalculateCamera(player.Position);

@@ -155,7 +155,7 @@ namespace PirateGame
 
                 if (pauseDeath >= 10f) // Note: see pauseDeath in Update
                 {
-                    GameWorld.RemoveObjects.Add(this);
+                    GameWorld.RemoveGameObject(this);
                 }
             }
         }
