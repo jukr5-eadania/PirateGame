@@ -8,7 +8,7 @@ namespace PirateGame
     /// <summary>
     /// "GameObject" is a superclass for all object to inherit from
     /// </summary>
-    abstract class GameObject
+    public abstract class GameObject
     {
         // Field //
         protected Texture2D sprite;
@@ -22,6 +22,7 @@ namespace PirateGame
         protected Dictionary<string, Animation> animations = new Dictionary<string, Animation>();
         protected int currentIndex; // Index of current frame
         protected float timeElapsed; // time passed since frame changed
+        protected List<GameObject> collidingObjects = new List<GameObject>();
         protected float scale = 1;
         protected bool pauseAnimation = false;
 
@@ -31,22 +32,27 @@ namespace PirateGame
             get
             {
                 // note : origin gets defined in "Draw"
-                return new Rectangle((int)position.X - (int)origin.X, (int)position.Y - (int)origin.Y, sprite.Width, sprite.Height);
+                return new Rectangle((int)Position.X - (int)origin.X, (int)Position.Y - (int)origin.Y, sprite.Width, sprite.Height);
             }
         }
+
+        public Vector2 Position { get => position; set => position = value; }
+
+        // Methods
+
         public virtual Rectangle attackBox { get; }
         
 
         // Methods //
         public abstract void LoadContent(ContentManager content);
         public abstract void Update(GameTime gameTime);
-       
+
         /// <summary>
         /// "Draw" draws the sprite.
         /// </summary>
         /// <param name="spriteBatch"></param>
-        public virtual void Draw (SpriteBatch spriteBatch)
-        {       
+        public virtual void Draw(SpriteBatch spriteBatch)
+        {
             origin = new Vector2(sprite.Width / 2, sprite.Height / 2);
             spriteBatch.Draw(sprite, position, null, Color.White, 0, origin, scale, spriteEffects, 1);
         }
@@ -56,15 +62,15 @@ namespace PirateGame
         /// velocity and speed to find its new position.
         /// </summary>
         /// <param name="gameTime"></param>
-        protected void Move (GameTime gameTime)
+        protected void Move(GameTime gameTime)
         {
             // Calculate deltaTime based on the gameTime
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             //Move the object
-            position += ((velocity * speed) * deltaTime);
+            Position += ((velocity * speed) * deltaTime);
 
-            position += ((jumpVelocity * speed) * deltaTime);
+            Position += ((jumpVelocity * speed) * deltaTime);
         }
 
         /// <summary>
@@ -149,16 +155,36 @@ namespace PirateGame
 
         }
 
+        public virtual void OnCollisionExit(GameObject other)
+        {
+
+        }
+
+        public virtual void OnCollisionEnter(GameObject other)
+        {
+
+        }
+
         /// <summary>
         /// "CheckCollsion" checks if there has been a collsion between objects.
         /// If a collision is found it will call on the "OnCollision" method.
         /// </summary>
         /// <param name="other"></param>
-        public void CheckCollision (GameObject other)
+        public void CheckCollision(GameObject other)
         {
-            if(collisionBox.Intersects(other.collisionBox)&& other != this)
+            if (collisionBox.Intersects(other.collisionBox) && other != this && !collidingObjects.Contains(other))
+            {
+                OnCollisionEnter(other);
+                collidingObjects.Add(other);
+            }
+            else if (collisionBox.Intersects(other.collisionBox) && other != this)
             {
                 OnCollision(other);
+            }
+            else if (collidingObjects.Contains(other))
+            {
+                OnCollisionExit(other);
+                collidingObjects.Remove(other);
             }
 
             if (attackBox.Intersects(other.collisionBox) && other != this)
@@ -166,7 +192,7 @@ namespace PirateGame
                 OnCollision(other);
             }
         }
-        
+
         /// <summary>
         /// "TakeDamage" is called when an object with health
         /// collied with somthing that is suppose to damage it.

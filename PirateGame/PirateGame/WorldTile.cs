@@ -25,6 +25,7 @@ namespace PirateGame
             this.textureAtlas = textureAtlas;
             this.destinationRectange = destinationRectange;
             this.source = source;
+
         }
 
         public override void Draw(SpriteBatch spriteBatch)

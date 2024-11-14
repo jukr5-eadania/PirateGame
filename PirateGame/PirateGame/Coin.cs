@@ -11,7 +11,7 @@ namespace PirateGame
 
         public Coin(Vector2 position)
         {
-            
+            this.Position = position;
         }
 
         public override void LoadContent(ContentManager content)
