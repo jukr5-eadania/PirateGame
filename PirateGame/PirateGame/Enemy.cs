@@ -30,10 +30,10 @@ namespace PirateGame
 
 
         // Properties //
-              
-        
+
+
         // The collision box for when hitting the player / doing damage
-        public override Rectangle attackBox 
+        public override Rectangle attackBox
         {
             get
             {
@@ -45,7 +45,7 @@ namespace PirateGame
         public Enemy()
         {
             health = 0;
-            position = new Vector2(GameWorld.Width-550, (GameWorld.Height / 4)+20);
+            position = new Vector2(GameWorld.Width - 1000, (GameWorld.Height / 4) + 20);
             scale = 1.2f;
 
         }
@@ -85,11 +85,11 @@ namespace PirateGame
 
             //creating the animation in the AddAnimation method in GameObject (class)
             //witch then adds them to the animation list
-            AddAnimation(new Animation(idle, "skeleton_idle", 6, true, false));
-            AddAnimation(new Animation(walk, "skeleton_walk", 6, true, false));
-            AddAnimation(new Animation(attack, "skeleton_attack", 8, false, false));
-            AddAnimation(new Animation(hurt, "skeleton_hurt", 6, false, false));
-            AddAnimation(new Animation(die, "skeleton_die", 6, false, true));
+            AddAnimation(new Animation(idle, "skeleton_idle", 6, true));
+            AddAnimation(new Animation(walk, "skeleton_walk", 6, true));
+            AddAnimation(new Animation(attack, "skeleton_attack", 8, false));
+            AddAnimation(new Animation(hurt, "skeleton_hurt", 6, false));
+            AddAnimation(new Animation(die, "skeleton_die", 6, false));
 
             // Default animation
             PlayAnimation("skeleton_idle");
@@ -110,7 +110,7 @@ namespace PirateGame
                 if (isAttacking == false)
                 {
                     isAttacking = true;
-                    
+
                 }
 
             }
@@ -122,10 +122,24 @@ namespace PirateGame
         /// </summary>
         public override void TakeDamage()
         {
-                        
+
             if (health <= 0)// when dead
             {
                 isDead = true;
+            }
+
+        }
+
+        /// <summary>
+        /// When an animation is done playing
+        /// </summary>
+        /// <param name="name"></param>
+        protected override void OnAnimationDone(string name)
+        {
+            if (name == "skeleton_die") //when it has played the death animation once
+            {
+                pauseAnimation = true;
+                currentIndex = currentAnimation.Sprites.Length-1;
             }
 
         }
@@ -138,7 +152,7 @@ namespace PirateGame
             {
                 patrol = false;
                 PlayAnimation("skeleton_die");
-                                
+
                 if (pauseDeath >= 10f) // Note: see pauseDeath in Update
                 {
                     GameWorld.RemoveObjects.Add(this);
@@ -151,20 +165,24 @@ namespace PirateGame
         /// </summary>
         public void Attack()
         {
-            attackDamage = 10;
-
-            if (isAttacking)
+            if (!isDead) // set to check if enemy is dead. if it is not dead contnue
             {
-                PlayAnimation("skeleton_attack");
-                
-                if (cooldown >= 1f) // Note: see cooldown in Update
-                {
-                    isAttacking = false;
-                    cooldown = 0f;
-                    patrol = true;
-                }
+                attackDamage = 10;
 
+                if (isAttacking)
+                {
+                    PlayAnimation("skeleton_attack");
+
+                    if (cooldown >= 1f) // Note: see cooldown in Update
+                    {
+                        isAttacking = false;
+                        cooldown = 0f;
+                        patrol = true;
+                    }
+
+                }
             }
+
 
         }
 

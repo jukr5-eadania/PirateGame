@@ -20,10 +20,10 @@ namespace PirateGame
         protected Animation currentAnimation;
         protected SpriteEffects spriteEffects = SpriteEffects.None;
         protected Dictionary<string, Animation> animations = new Dictionary<string, Animation>();
-        private int currentIndex; // Index of current frame
+        protected int currentIndex; // Index of current frame
         protected float timeElapsed; // time passed since frame changed
         protected float scale = 1;
-        private bool pauseAnimation = false;
+        protected bool pauseAnimation = false;
 
         // Properties //
         public virtual Rectangle collisionBox
@@ -68,11 +68,17 @@ namespace PirateGame
         }
 
         /// <summary>
+        ///  When the animation is done call this method to tell it what it should do next (i.e. go back to idle)
+        /// </summary>
+        /// <param name="name"></param>
+        protected virtual void OnAnimationDone(string name) { }
+
+        /// <summary>
         /// "Animation" calculates how fast the sprites of an object 
         /// changes to create its animation.
         /// </summary>
         /// <param name="gameTime"></param>
-        protected void Animation (GameTime gameTime)
+        protected virtual void Animation (GameTime gameTime)
         {
             if (!pauseAnimation)
             {
@@ -83,22 +89,16 @@ namespace PirateGame
                 currentIndex = (int)(timeElapsed * currentAnimation.FPS);
 
                 //check if the animation needs to restart
-                if (currentIndex >= currentAnimation.Sprites.Length && currentAnimation.IsLooping)
+                if (currentIndex >= currentAnimation.Sprites.Length)
                 {
                     //reset the animation
                     timeElapsed = 0;
                     currentIndex = 0;
+                    OnAnimationDone(currentAnimation.Name);
 
-                }
-                //if the animation is only run once (IsLooping = false), the animation will be paused on its last frame
+                }  
+                // if the animation is only run once (PlayOnce = true), the animation will stop on its last frame
                 else if (currentIndex >= currentAnimation.Sprites.Length && !currentAnimation.IsLooping)
-                {
-                    //PlayAnimation("pirate_idle");
-                    timeElapsed = 0;
-                    currentIndex = 0;
-
-                }
-                else if(currentIndex >= currentAnimation.Sprites.Length && !currentAnimation.IsLooping && currentAnimation.PlayOnce)
                 {
 
                     pauseAnimation = true;
