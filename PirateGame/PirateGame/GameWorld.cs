@@ -10,17 +10,18 @@ namespace PirateGame
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        private SpriteFont UIFont;
+        private Background bg;
         private List<GameObject> gameObjects = new List<GameObject>();
         private Player player = new Player(new Vector2(GameWorld.Width / 2, GameWorld.Height / 2));
         public static int Height { get; set; }
         public static int Width { get; set; }
        
         private Dictionary<Vector2, int> tiles;
+        // 
         private Texture2D textureAtlas;
-        private Rectangle destinationRectange;
+        // Matrix used to move camera with player
         private Matrix _translation;
-        private SpriteFont UIFont;
-        private Background bg;
 
         public GameWorld()
         {
@@ -138,7 +139,7 @@ namespace PirateGame
                 int numTilesPerRow = 6;
                 int pixelTilesize = 32;
 
-                destinationRectange = new((int)item.Key.X * displayTilesize, (int)item.Key.Y * displayTilesize, displayTilesize, displayTilesize);
+                Rectangle destinationRectange = new((int)item.Key.X * displayTilesize, (int)item.Key.Y * displayTilesize, displayTilesize, displayTilesize);
 
                 int x = item.Value % numTilesPerRow;
                 int y = item.Value / numTilesPerRow;
