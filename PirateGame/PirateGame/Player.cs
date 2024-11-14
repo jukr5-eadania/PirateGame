@@ -9,6 +9,7 @@ namespace PirateGame
     /// <summary>
     /// Player class that controls and keeps track of the player.
     /// The class is a child of GameObject
+    /// Made by: Julius
     /// </summary>
     internal class Player : GameObject
     {
@@ -37,7 +38,7 @@ namespace PirateGame
 
 
         /// <summary>
-        /// Constructor used to set speed of player
+        /// Constructor used to set stats of player
         /// </summary>
         /// <param name="position">Used to set start position of player when first initialised</param>
         public Player(Vector2 position)

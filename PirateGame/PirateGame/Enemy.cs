@@ -13,6 +13,8 @@ namespace PirateGame
 
     /// <summary>
     /// "Enemy" is a sup-class from GameObject.
+    /// It controls the enemy movement and funktions.
+    /// Made by: Emilie
     /// </summary>
     internal class Enemy : GameObject
     {
@@ -42,6 +44,10 @@ namespace PirateGame
 
 
         // Methods //
+
+        /// <summary>
+        /// the enemy stats
+        /// </summary>
         public Enemy()
         {
             
@@ -50,6 +56,10 @@ namespace PirateGame
 
         }
 
+        /// <summary>
+        /// loading and addin the enemy animations
+        /// </summary>
+        /// <param name="content"></param>
         public override void LoadContent(ContentManager content)
         {
 
@@ -101,7 +111,7 @@ namespace PirateGame
         /// <summary>
         /// When player collides with the enemy's attackBox the enemy will attack
         /// </summary>
-        /// <param name="other"></param>
+        /// <param name="other">name for the other gameobject that is collided with</param>
         public override void OnCollision(GameObject other)
         {
             if (other is Player)
@@ -125,9 +135,9 @@ namespace PirateGame
         }
 
         /// <summary>
-        /// When an animation is done playing
+        ///  When the animation is done call this method to tell it what it should do next (i.e. go back to idle).
         /// </summary>
-        /// <param name="name"></param>
+        /// <param name="name"> name is the key value of the animation dictionary </param>
         protected override void OnAnimationDone(string name)
         {
             if (name == "skeleton_die") //when it has played the death animation once
@@ -259,14 +269,16 @@ namespace PirateGame
 
         }
 
-
+        /// <summary>
+        /// The main loop of the enemy
+        /// </summary>
+        /// <param name="gameTime">Takes a GameTime that provides the timespan since last call to update</param>
         public override void Update(GameTime gameTime)
         {
             Animation(gameTime);
             Patrol(gameTime);
             Move(gameTime);
-            Attack();
-            TakeDamage();
+            Attack();           
             Dead();
 
             // cooldown timer for when attacking

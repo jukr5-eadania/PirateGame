@@ -4,6 +4,11 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace PirateGame
 {
+    /// <summary>
+    /// Bullet class that keeps track of the bullets.
+    /// The class is a child of GameObject
+    /// Made by: Julius
+    /// </summary>
     internal class Bullet : GameObject
     {
         public Bullet(Texture2D sprite, Vector2 position)

@@ -6,7 +6,8 @@ using System.Collections.Generic;
 namespace PirateGame
 {
     /// <summary>
-    /// "GameObject" is a superclass for all object to inherit from
+    /// "GameObject" is a superclass that all object will inherit from
+    /// Made by: Julius, Emilie, Mads
     /// </summary>
     public abstract class GameObject
     {
@@ -37,18 +38,26 @@ namespace PirateGame
         }
 
         public Vector2 Position { get => position; set => position = value; }
-
-        // Methods
-
         public virtual Rectangle attackBox { get; }
-        
 
+        
         // Methods //
+
+        /// <summary>
+        /// This method is abstract so that all objects can override it 
+        /// and load the sprites and add the animations they need
+        /// </summary>
+        /// <param name="content"></param>
         public abstract void LoadContent(ContentManager content);
+
+        /// <summary>
+        /// The main loop of the objcet
+        /// </summary>
+        /// <param name="gameTime">Takes a GameTime that provides the timespan since last call to update</param>
         public abstract void Update(GameTime gameTime);
 
         /// <summary>
-        /// "Draw" draws the sprite.
+        /// Draws the sprites and edit its origing
         /// </summary>
         /// <param name="spriteBatch"></param>
         public virtual void Draw(SpriteBatch spriteBatch)
@@ -74,9 +83,10 @@ namespace PirateGame
         }
 
         /// <summary>
-        ///  When the animation is done call this method to tell it what it should do next (i.e. go back to idle)
+        ///  When the animation is done call this method to tell it what it should do next (i.e. go back to idle).
+        ///  This method is virtual so only the objects that use this will have to override it.
         /// </summary>
-        /// <param name="name"></param>
+        /// <param name="name"> name is the key value of the animation dictionary </param>
         protected virtual void OnAnimationDone(string name) { }
 
         /// <summary>
@@ -117,7 +127,7 @@ namespace PirateGame
         }
 
         /// <summary>
-        /// Plays an animation and makes sure the animation doesn't create an array overflow
+        /// Plays a new animation
         /// </summary>
         /// <param name="animationName">The name of the animation that is about to be played</param>
         public void PlayAnimation(string animationName)
@@ -149,17 +159,25 @@ namespace PirateGame
         /// "OnCollision" tells the program what happens when two specified 
         /// objects collied.
         /// </summary>
-        /// <param name="other"></param>
+        /// <param name="other">name for the other gameobject that is collided with</param>
         public virtual void OnCollision(GameObject other)
         {
 
         }
 
+        /// <summary>
+        /// When exiting a collision this is used
+        /// </summary>
+        /// <param name="other">name for the other gameobject that is collided with</param>
         public virtual void OnCollisionExit(GameObject other)
         {
             
         }
 
+        /// <summary>
+        /// When entering an collision this is used
+        /// </summary>
+        /// <param name="other">name for the other gameobject that is collided with</param>
         public virtual void OnCollisionEnter(GameObject other)
         {
 
@@ -169,7 +187,7 @@ namespace PirateGame
         /// "CheckCollsion" checks if there has been a collsion between objects.
         /// If a collision is found it will call on the "OnCollision" method.
         /// </summary>
-        /// <param name="other"></param>
+        /// <param name="other">name for the other gameobject that is collided with</param>
         public void CheckCollision(GameObject other)
         {
             if (collisionBox.Intersects(other.collisionBox) && other != this && !collidingObjects.Contains(other))
@@ -193,13 +211,5 @@ namespace PirateGame
             }
         }
 
-        /// <summary>
-        /// "TakeDamage" is called when an object with health
-        /// collied with somthing that is suppose to damage it.
-        /// </summary>
-        public virtual void TakeDamage()
-        {
-
-        }
     }
 }

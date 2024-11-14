@@ -7,6 +7,11 @@ using System.IO;
 
 namespace PirateGame
 {
+    /// <summary>
+    /// "GameWorld" is the main class. It is here we "create" the game by initializing objects and loading in the content we need to 
+    /// make the visual of the game. It is in charge of the main game loop.
+    /// Made by: Julius, Emilie, Mads
+    /// </summary>
     public class GameWorld : Game
     {
         // Field //
@@ -29,8 +34,10 @@ namespace PirateGame
         
          
         // Methods //
-
         
+        /// <summary>
+        /// "GameWorld()" is the window the game runs in.
+        /// </summary>
         public GameWorld()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -44,6 +51,9 @@ namespace PirateGame
             
         }
 
+        /// <summary>
+        /// "Initialize" creates the objects
+        /// </summary>
         protected override void Initialize()
         {
             GameWorld.Height = _graphics.PreferredBackBufferHeight;
@@ -55,6 +65,9 @@ namespace PirateGame
             base.Initialize();
         }
 
+        /// <summary>
+        /// Loads our game content in order to give the objects sprites
+        /// </summary>
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -76,6 +89,10 @@ namespace PirateGame
             UIFont = Content.Load<SpriteFont>("UIFont");
         }
 
+        /// <summary>
+        /// The main loop of the game
+        /// </summary>
+        /// <param name="gameTime">Takes a GameTime that provides the timespan since last call to update</param>
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -103,6 +120,7 @@ namespace PirateGame
             }
             gameObjectsToAdd.Clear();
 
+
             foreach (GameObject gameObjectToDespawn in gameObjectsToRemove)
             {
                 gameObjects.Remove(gameObjectToDespawn);
@@ -115,6 +133,10 @@ namespace PirateGame
             base.Update(gameTime);
         }
 
+        /// <summary>
+        /// "Draw" is called regulary to take the current game stat and draw what we want on the screen
+        /// </summary>
+        /// <param name="gameTime"></param>
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
@@ -140,7 +162,10 @@ namespace PirateGame
             base.Draw(gameTime);
         }
 
-
+        /// <summary>
+        /// draws the red collision box
+        /// </summary>
+        /// <param name="go"></param>
        private void DrawCollisionBox(GameObject go)
         {
             Rectangle collisionBox = go.collisionBox;
@@ -155,6 +180,10 @@ namespace PirateGame
             _spriteBatch.Draw(collisionTexture, leftLine, null, Color.Red, 0, Vector2.Zero, SpriteEffects.None, 1);
         }
 
+        /// <summary>
+        /// draws the black attack box 
+        /// </summary>
+        /// <param name="atkBox"></param>
        private void DrawAttackBox(GameObject atkBox)
         {
             // AttackBox for enemy
