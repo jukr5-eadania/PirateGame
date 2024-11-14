@@ -334,7 +334,7 @@ namespace PirateGame
                 }
             }
 
-            if (keystate.IsKeyDown(Keys.Space) && onGround && currentAnimation.IsLooping)
+            if (keystate.IsKeyDown(Keys.Space))
             {
                 Jump();
             }
@@ -351,7 +351,7 @@ namespace PirateGame
 
             //Something in this breaks everything
             //&& jumpPosition - jumpHeight >= position.Y
-            if (!onGround)
+            if (!onGround && jumpPosition - jumpHeight >= position.Y)
             {
                 PlayAnimation("pirate_fall");
                 jumpVelocity += new Vector2(0, 1);
@@ -363,7 +363,7 @@ namespace PirateGame
         /// </summary>
         public void Jump()
         {
-            if (!isJumping && onGround)
+            if ((onGround || !isJumping))
             {
                 jumpPosition = position.Y;
                 isJumping = true;
