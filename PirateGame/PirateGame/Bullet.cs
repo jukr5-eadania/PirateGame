@@ -31,10 +31,10 @@ namespace PirateGame
                 GameWorld.RemoveGameObject(this);
             }
 
-            //if (other is tiles)
-            //{
-
-            //}
+            if (other is WorldTile)
+            {
+                GameWorld.RemoveGameObject(this);
+            }
         }
     }
 }
