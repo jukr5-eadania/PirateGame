@@ -125,7 +125,7 @@ namespace PirateGame
 #endif
             }
             _spriteBatch.DrawString(UIFont, "Health: " + player.Health, new Vector2((float)(player.Position.X - GameWorld.Width / 2), (float)(player.Position.Y - GameWorld.Height / 2)), Color.White);
-            _spriteBatch.DrawString(UIFont, "Coins: " + player.Coin, new Vector2((float)(player.Position.X - GameWorld.Width / 2), (float)(player.Position.Y - GameWorld.Height / 2) + 30), Color.White);
+            _spriteBatch.DrawString(UIFont, "Treasure: " + player.Coin, new Vector2((float)(player.Position.X - GameWorld.Width / 2), (float)(player.Position.Y - GameWorld.Height / 2) + 30), Color.White);
             _spriteBatch.DrawString(UIFont, "Ammo: " + player.Ammo, new Vector2((float)(player.Position.X - GameWorld.Width / 2), (float)(player.Position.Y - GameWorld.Height / 2) + 60), Color.White);
             _spriteBatch.End();
 
