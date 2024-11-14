@@ -10,7 +10,7 @@ namespace PirateGame
     /// </summary>
     public abstract class GameObject
     {
-        // Field
+        // Field //
         protected Texture2D sprite;
         protected Vector2 velocity;
         protected Vector2 jumpVelocity;
@@ -20,12 +20,13 @@ namespace PirateGame
         protected Animation currentAnimation;
         protected SpriteEffects spriteEffects = SpriteEffects.None;
         protected Dictionary<string, Animation> animations = new Dictionary<string, Animation>();
-        private int currentIndex; // Index of current frame
+        protected int currentIndex; // Index of current frame
         protected float timeElapsed; // time passed since frame changed
         protected List<GameObject> collidingObjects = new List<GameObject>();
         protected float scale = 1;
+        protected bool pauseAnimation = false;
 
-        // Properties
+        // Properties //
         public virtual Rectangle collisionBox
         {
             get
@@ -39,6 +40,10 @@ namespace PirateGame
 
         // Methods
 
+        public virtual Rectangle attackBox { get; }
+        
+
+        // Methods //
         public abstract void LoadContent(ContentManager content);
         public abstract void Update(GameTime gameTime);
 
@@ -69,33 +74,46 @@ namespace PirateGame
         }
 
         /// <summary>
+        ///  When the animation is done call this method to tell it what it should do next (i.e. go back to idle)
+        /// </summary>
+        /// <param name="name"></param>
+        protected virtual void OnAnimationDone(string name) { }
+
+        /// <summary>
         /// "Animation" calculates how fast the sprites of an object 
         /// changes to create its animation.
         /// </summary>
         /// <param name="gameTime"></param>
-        protected void Animation(GameTime gameTime)
+        protected virtual void Animation (GameTime gameTime)
         {
-            //add time that has passed since last update
-            timeElapsed += (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            // calculate the currrnet index
-            currentIndex = (int)(timeElapsed * currentAnimation.FPS);
-
-            //check if the animation needs to restart
-            if (currentIndex >= currentAnimation.Sprites.Length && currentAnimation.IsLooping)
+            if (!pauseAnimation)
             {
-                //reset the animation
-                timeElapsed = 0;
-                currentIndex = 0;
-            }
-            else if (currentIndex >= currentAnimation.Sprites.Length && !currentAnimation.IsLooping)
-            {
-                timeElapsed = 0;
-                currentIndex = 0;
-                PlayAnimation("pirate_idle");
+                //add time that has passed since last update
+                timeElapsed += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                // calculate the currrnet index
+                currentIndex = (int)(timeElapsed * currentAnimation.FPS);
+
+                //check if the animation needs to restart
+                if (currentIndex >= currentAnimation.Sprites.Length)
+                {
+                    //reset the animation
+                    timeElapsed = 0;
+                    currentIndex = 0;
+                    OnAnimationDone(currentAnimation.Name);
+
+                }  
+                // if the animation is only run once (pauseAnimation = true), the animation will stop on its last frame
+                else if (currentIndex >= currentAnimation.Sprites.Length && !currentAnimation.IsLooping)
+                {
+
+                    pauseAnimation = true;
+                    return;
+                }
+
+                sprite = currentAnimation.Sprites[currentIndex];
             }
 
-            sprite = currentAnimation.Sprites[currentIndex];
         }
 
         /// <summary>
@@ -109,6 +127,7 @@ namespace PirateGame
                 currentAnimation = animations[animationName];
                 timeElapsed = 0;
                 currentIndex = 0;
+                pauseAnimation = false;
             }
         }
 
@@ -166,6 +185,11 @@ namespace PirateGame
             {
                 OnCollisionExit(other);
                 collidingObjects.Remove(other);
+            }
+
+            if (attackBox.Intersects(other.collisionBox) && other != this)
+            {
+                OnCollision(other);
             }
         }
 

@@ -380,6 +380,30 @@ namespace PirateGame
         }
 
         /// <summary>
+        /// When the animation has been run once go back to idle
+        /// </summary>
+        /// <param name="name"></param>
+        protected override void OnAnimationDone(string name)
+        {
+            if (name.Contains("atk")) // when attacking
+            {
+                PlayAnimation("pirate_idle");
+            }
+            if (name.Contains("pirate_gun_out")) // when taking gun out
+            {
+                PlayAnimation("pirate_idle");
+            }
+            if (name.Contains("shoot")) // when shooting
+            {
+                PlayAnimation("pirate_idle");
+            }
+            if (name.Contains("pirate_gun_in")) // when putting the gun back 
+            {
+                PlayAnimation("pirate_idle");
+            }
+        }
+
+        /// <summary>
         /// Controls what happens when the player attacks
         /// </summary>
         public void Attack()
@@ -388,7 +412,7 @@ namespace PirateGame
             combo++;
             if (combo == 1)
             {
-                PlayAnimation("pirate_atk1");
+                PlayAnimation("pirate_atk1");                
             }
             if (combo == 2)
             {

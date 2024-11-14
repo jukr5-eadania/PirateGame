@@ -34,6 +34,7 @@ namespace PirateGame
         }
         public override void LoadContent(ContentManager content)
         {
+
         }
 
         public override void Update(GameTime gameTime)

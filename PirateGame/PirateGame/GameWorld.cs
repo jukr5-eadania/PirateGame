@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using SharpDX.Direct3D9;
 using System.Collections.Generic;
 using System.IO;
 
@@ -8,12 +9,14 @@ namespace PirateGame
 {
     public class GameWorld : Game
     {
+        // Field //
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private SpriteFont UIFont;
         private Background bg;
         private List<GameObject> gameObjects = new List<GameObject>();
         private Player player = new Player(new Vector2(GameWorld.Width / 2, 325f));
+        private Texture2D collisionTexture;
         public static int Height { get; set; }
         public static int Width { get; set; }
         private Dictionary<Vector2, int> tiles;
@@ -23,19 +26,22 @@ namespace PirateGame
         private Matrix _translation;
         private static List<GameObject> gameObjectsToAdd = new List<GameObject>();
         private static List<GameObject> gameObjectsToRemove = new List<GameObject>();
-        private Texture2D collisionTexture;
+        
+         
+        // Methods //
 
+        
         public GameWorld()
         {
             _graphics = new GraphicsDeviceManager(this);
             _graphics.HardwareModeSwitch = false;
-            Window.IsBorderless = true;
-            _graphics.IsFullScreen = true;
+            Window.IsBorderless = false;
+            _graphics.IsFullScreen = false;
             _graphics.PreferredBackBufferHeight = 1080;
             _graphics.PreferredBackBufferWidth = 1920;
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-
+            
         }
 
         protected override void Initialize()
@@ -44,6 +50,7 @@ namespace PirateGame
             GameWorld.Width = _graphics.PreferredBackBufferWidth;
             bg = new Background();
             gameObjects.Add(player);
+            gameObjects.Add(new Enemy());
             gameObjects.Add(new Coin(new Vector2(130, 280)));
             base.Initialize();
         }
@@ -51,6 +58,7 @@ namespace PirateGame
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+            collisionTexture = Content.Load<Texture2D>("pixel");
 
             foreach (GameObject gameObject in gameObjects)
             {
@@ -81,13 +89,22 @@ namespace PirateGame
             foreach (GameObject gameObject in gameObjects)
             {
                 gameObject.Update(gameTime);
+                
                 foreach (GameObject other in gameObjects)
                 {
                     gameObject.CheckCollision(other);
                 }
             }
 
+            foreach (GameObject atkBox in gameObjects)
+            {
+                atkBox.Update(gameTime);
+                foreach (GameObject other in gameObjects)
+                {
+                    atkBox.CheckCollision(other);
 
+                }
+            }
 
             foreach (GameObject gameObjectToSpawn in gameObjectsToAdd)
             {
@@ -122,6 +139,7 @@ namespace PirateGame
 
 #if DEBUG
                 DrawCollisionBox(gameObject);
+                DrawAttackBox(gameObject);
 #endif
             }
             _spriteBatch.DrawString(UIFont, "Health: " + player.Health, new Vector2((float)(player.Position.X - GameWorld.Width / 2), (float)(player.Position.Y - GameWorld.Height / 2)), Color.White);
@@ -131,6 +149,39 @@ namespace PirateGame
 
             base.Draw(gameTime);
         }
+
+
+       private void DrawCollisionBox(GameObject go)
+        {
+            Rectangle collisionBox = go.collisionBox;
+            Rectangle topLine = new Rectangle(collisionBox.X, collisionBox.Y, collisionBox.Width, 1);
+            Rectangle bottomLine = new Rectangle(collisionBox.X, collisionBox.Y + collisionBox.Height, collisionBox.Width, 1);
+            Rectangle rightLine = new Rectangle(collisionBox.X + collisionBox.Width, collisionBox.Y, 1, collisionBox.Height);
+            Rectangle leftLine = new Rectangle(collisionBox.X, collisionBox.Y, 1, collisionBox.Height);
+
+            _spriteBatch.Draw(collisionTexture, topLine, null, Color.Red, 0, Vector2.Zero, SpriteEffects.None, 1);
+            _spriteBatch.Draw(collisionTexture, bottomLine, null, Color.Red, 0, Vector2.Zero, SpriteEffects.None, 1);
+            _spriteBatch.Draw(collisionTexture, rightLine, null, Color.Red, 0, Vector2.Zero, SpriteEffects.None, 1);
+            _spriteBatch.Draw(collisionTexture, leftLine, null, Color.Red, 0, Vector2.Zero, SpriteEffects.None, 1);
+        }
+
+       private void DrawAttackBox(GameObject atkBox)
+        {
+            // AttackBox for enemy
+            Rectangle attackBox = atkBox.attackBox;
+            Rectangle topLine = new Rectangle(attackBox.X, attackBox.Y, attackBox.Width, 1);
+            Rectangle bottomLine = new Rectangle(attackBox.X, attackBox.Y + attackBox.Height, attackBox.Width, 1);
+            Rectangle rightLine = new Rectangle(attackBox.X + attackBox.Width, attackBox.Y, 1, attackBox.Height);
+            Rectangle leftLine = new Rectangle(attackBox.X, attackBox.Y, 1, attackBox.Height);
+
+            _spriteBatch.Draw(collisionTexture, topLine, null, Color.Black, 0, Vector2.Zero, SpriteEffects.None, 1);
+            _spriteBatch.Draw(collisionTexture, bottomLine, null, Color.Black, 0, Vector2.Zero, SpriteEffects.None, 1);
+            _spriteBatch.Draw(collisionTexture, rightLine, null, Color.Black, 0, Vector2.Zero, SpriteEffects.None, 1);
+            _spriteBatch.Draw(collisionTexture, leftLine, null, Color.Black, 0, Vector2.Zero, SpriteEffects.None, 1);
+        }
+
+
+
         /// <summary>
         /// Returns every position and type of tile from given tilemap
         /// </summary>
@@ -204,20 +255,6 @@ namespace PirateGame
         public static void RemoveGameObject(GameObject gameObject)
         {
             gameObjectsToRemove.Add(gameObject);
-        }
-
-        private void DrawCollisionBox(GameObject gameObject)
-        {
-            Rectangle collisionBox = gameObject.collisionBox;
-            Rectangle topLine = new Rectangle(collisionBox.X, collisionBox.Y, collisionBox.Width, 1);
-            Rectangle bottomLine = new Rectangle(collisionBox.X, collisionBox.Y + collisionBox.Height, collisionBox.Width, 1);
-            Rectangle rightLine = new Rectangle(collisionBox.X + collisionBox.Width, collisionBox.Y, 1, collisionBox.Height);
-            Rectangle leftLine = new Rectangle(collisionBox.X, collisionBox.Y, 1, collisionBox.Height);
-
-            _spriteBatch.Draw(collisionTexture, topLine, null, Color.Red, 0, Vector2.Zero, SpriteEffects.None, 1);
-            _spriteBatch.Draw(collisionTexture, bottomLine, null, Color.Red, 0, Vector2.Zero, SpriteEffects.None, 1);
-            _spriteBatch.Draw(collisionTexture, rightLine, null, Color.Red, 0, Vector2.Zero, SpriteEffects.None, 1);
-            _spriteBatch.Draw(collisionTexture, leftLine, null, Color.Red, 0, Vector2.Zero, SpriteEffects.None, 1);
         }
     }
 }
