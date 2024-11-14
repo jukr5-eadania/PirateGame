@@ -12,8 +12,7 @@ namespace PirateGame
     /// </summary>
     internal class Player : GameObject
     {
-        private int health = 3;
-        private int damage;
+        private int health = 5;
         private float invincibleTime;
         private float maxInvincibleTime = 2f;
         private bool isHit;
@@ -44,7 +43,7 @@ namespace PirateGame
         public Player(Vector2 position)
         {
             this.Position = position;
-            speed = 200;
+            speed = 400;
         }
 
         /// <summary>
@@ -273,17 +272,17 @@ namespace PirateGame
             {
                 if (other is Enemy && currentAnimation.Name == "pirate_atk1" || other is Enemy && currentAnimation.Name == "pirate_atk2" || other is Enemy && currentAnimation.Name == "pirate_atk3")
                 {
-
+                    
                 }
                 else if (other is Enemy)
                 {
+                    isHit = true;
                     PlayAnimation("pirate_hit");
                     health--;
-                    isHit = true;
                 }
             }
         }
-
+        
         /// <summary>
         /// Decides what happens when a player first collides with an object. This only happens on the first collsion with a gameobject
         /// Will only trigger again if the player collides with the gameobject again after the player has left the gameobjects collision
@@ -397,6 +396,10 @@ namespace PirateGame
                 PlayAnimation("pirate_idle");
             }
             if (name.Contains("pirate_gun_in")) // when putting the gun back 
+            {
+                PlayAnimation("pirate_idle");
+            }
+            if (name.Contains("pirate_hit"))
             {
                 PlayAnimation("pirate_idle");
             }

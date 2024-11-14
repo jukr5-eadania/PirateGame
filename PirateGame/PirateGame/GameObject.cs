@@ -157,7 +157,7 @@ namespace PirateGame
 
         public virtual void OnCollisionExit(GameObject other)
         {
-
+            
         }
 
         public virtual void OnCollisionEnter(GameObject other)

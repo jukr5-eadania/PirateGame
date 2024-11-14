@@ -26,11 +26,6 @@ namespace PirateGame
 
         public override void OnCollision(GameObject other)
         {
-            if (other is Enemy)
-            {
-                GameWorld.RemoveGameObject(this);
-            }
-
             if (other is WorldTile)
             {
                 GameWorld.RemoveGameObject(this);

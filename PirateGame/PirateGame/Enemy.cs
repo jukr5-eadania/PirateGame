@@ -17,12 +17,11 @@ namespace PirateGame
     internal class Enemy : GameObject
     {
         // Field //     
-        private int health;
+        private int health = 3;
         private bool goLeft = true; // For when the enemy needs to go left
         private bool pausePatrol = true; // For when the enemy needs to pause in its patrol
         private bool patrol = true; // For when switching between patroling and attacking
-        private float timeElaps;
-        private int attackDamage;
+        private float timeElaps; 
         private bool isAttacking = false;
         private float cooldown; // The cooldown between its attack
         private bool isDead = false;
@@ -30,7 +29,7 @@ namespace PirateGame
 
 
         // Properties //
-
+        
 
         // The collision box for when hitting the player / doing damage
         public override Rectangle attackBox
@@ -41,10 +40,11 @@ namespace PirateGame
             }
         }
 
+
         // Methods //
         public Enemy()
         {
-            health = 10;
+            
             position = new Vector2(GameWorld.Width - 550, (GameWorld.Height / 4) + 20);
             scale = 1.2f;
 
@@ -85,11 +85,11 @@ namespace PirateGame
 
             //creating the animation in the AddAnimation method in GameObject (class)
             //witch then adds them to the animation list
-            AddAnimation(new Animation(idle, "skeleton_idle", 6, true));
-            AddAnimation(new Animation(walk, "skeleton_walk", 6, true));
-            AddAnimation(new Animation(attack, "skeleton_attack", 8, false));
-            AddAnimation(new Animation(hurt, "skeleton_hurt", 6, false));
-            AddAnimation(new Animation(die, "skeleton_die", 6, false));
+            AddAnimation(new Animation(idle, "skeleton_idle", 12, true));
+            AddAnimation(new Animation(walk, "skeleton_walk", 12, true));
+            AddAnimation(new Animation(attack, "skeleton_attack", 16, false));
+            AddAnimation(new Animation(hurt, "skeleton_hurt", 12, false));
+            AddAnimation(new Animation(die, "skeleton_die", 12, false));
 
             // Default animation
             PlayAnimation("skeleton_idle");
@@ -115,19 +115,13 @@ namespace PirateGame
 
             }
 
-        }
-
-        /// <summary>
-        /// When player hits or kills enemy
-        /// </summary>
-        public override void TakeDamage()
-        {
-
-            if (health <= 0)// when dead
+            if (other is Bullet)
             {
-                isDead = true;
+                health--;
+                patrol = false;
+                PlayAnimation("skeleton_hurt");
+                GameWorld.RemoveGameObject(other);
             }
-
         }
 
         /// <summary>
@@ -141,6 +135,11 @@ namespace PirateGame
                 pauseAnimation = true;
                 currentIndex = currentAnimation.Sprites.Length-1;
             }
+            if (name == "skeleton_hurt")
+            {
+                PlayAnimation("skeleton_idle");
+                patrol = true;
+            }
 
         }
         /// <summary>
@@ -148,8 +147,9 @@ namespace PirateGame
         /// </summary>
         public void Dead()
         {
-            if (isDead == true)
+            if (health <= 0)
             {
+                isDead = true;
                 patrol = false;
                 PlayAnimation("skeleton_die");
 
@@ -167,8 +167,7 @@ namespace PirateGame
         {
             if (!isDead) // set to check if enemy is dead. if it is not dead contnue
             {
-                attackDamage = 10;
-
+                
                 if (isAttacking)
                 {
                     PlayAnimation("skeleton_attack");
@@ -182,8 +181,6 @@ namespace PirateGame
 
                 }
             }
-
-
         }
 
 
@@ -193,7 +190,7 @@ namespace PirateGame
         public void Patrol(GameTime gameTime)
         {
 
-            this.speed = 2;
+            this.speed = 4;
             int wp1 = 1000; // wp1 is the point towards the left
             int wp2 = 1350; // wp2 is the point towards the right
 
