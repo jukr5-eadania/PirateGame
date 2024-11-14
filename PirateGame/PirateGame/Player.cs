@@ -6,6 +6,10 @@ using System;
 
 namespace PirateGame
 {
+    /// <summary>
+    /// Player class that controls and keeps track of the player.
+    /// The class is a child of GameObject
+    /// </summary>
     internal class Player : GameObject
     {
         private int health = 3;
@@ -27,22 +31,25 @@ namespace PirateGame
         private int ammo = 5;
         private Texture2D bulletSprite;
 
+        /// <summary>
+        /// The proterty for getting the players position (Mainly used for the camera to follow the player
+        /// </summary>
         public Vector2 Position { get => position; }
 
-        public override Rectangle collisionBox
-        {
-            get
-            {
-                return new Rectangle((int)position.X - (int)origin.X, (int)position.Y - (int)origin.Y, sprite.Width, sprite.Height);
-            }
-        }
-
+        /// <summary>
+        /// Constructor used to set speed of player
+        /// </summary>
+        /// <param name="position">Used to set start position of player when first initialised</param>
         public Player(Vector2 position)
         {
             this.position = position;
             speed = 200;
         }
 
+        /// <summary>
+        /// Loads all sprites of the player
+        /// </summary>
+        /// <param name="content"></param>
         public override void LoadContent(ContentManager content)
         {
 
@@ -211,6 +218,10 @@ namespace PirateGame
             bulletSprite = content.Load<Texture2D>("Pirate/bullet0");
         }
 
+        /// <summary>
+        /// The main loop of the player
+        /// </summary>
+        /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
             HandleInput();
@@ -251,6 +262,10 @@ namespace PirateGame
             }
         }
 
+        /// <summary>
+        /// Decides what happens when player collides with another gameobject
+        /// </summary>
+        /// <param name="other">name for the other gameobject the player collides with</param>
         public override void OnCollision(GameObject other)
         {
             if (!isHit)
@@ -269,6 +284,11 @@ namespace PirateGame
             }
         }
 
+        /// <summary>
+        /// Decides what happens when a player first collides with an object. This only happens on the first collsion with a gameobject
+        /// Will only trigger again if the player collides with the gameobject again after the player has left the gameobjects collision
+        /// </summary>
+        /// <param name="other">name for the other gameobject the player collides with</param>
         public override void OnCollisionEnter(GameObject other)
         {
             if (other is WorldTile && onGround == false)
@@ -285,6 +305,9 @@ namespace PirateGame
             }
         }
 
+        /// <summary>
+        /// Is in charge of the input of the player
+        /// </summary>
         public void HandleInput()
         {
             velocity = Vector2.Zero;
@@ -335,6 +358,9 @@ namespace PirateGame
             }
         }
 
+        /// <summary>
+        /// Controls what happens when the player jumps
+        /// </summary>
         public void Jump()
         {
             if (!isJumping && onGround)
@@ -347,6 +373,9 @@ namespace PirateGame
             }
         }
 
+        /// <summary>
+        /// Controls what happens when the player attacks
+        /// </summary>
         public void Attack()
         {
             isAttacking = true;
@@ -365,6 +394,9 @@ namespace PirateGame
             }
         }
 
+        /// <summary>
+        /// Controls what happens when the player shoots
+        /// </summary>
         public void Shoot()
         {
             if (ammo <= 0)
@@ -380,6 +412,10 @@ namespace PirateGame
             }
         }
 
+        /// <summary>
+        /// Checks if the player is alive
+        /// </summary>
+        /// <returns>true if the player health is above 0, false if the player health is below 0</returns>
         public bool isAlive()
         {
             if (health <= 0)
