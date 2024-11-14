@@ -351,7 +351,7 @@ namespace PirateGame
 
             //Something in this breaks everything
             //&& jumpPosition - jumpHeight >= position.Y
-            if (!onGround && jumpPosition - jumpHeight >= position.Y)
+            if ((!onGround && jumpPosition - jumpHeight >= position.Y) || (!onGround && !isJumping))
             {
                 PlayAnimation("pirate_fall");
                 jumpVelocity += new Vector2(0, 1);
@@ -363,7 +363,7 @@ namespace PirateGame
         /// </summary>
         public void Jump()
         {
-            if ((onGround || !isJumping))
+            if (onGround || !isJumping)
             {
                 jumpPosition = position.Y;
                 isJumping = true;
