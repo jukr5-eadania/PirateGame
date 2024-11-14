@@ -221,7 +221,7 @@ namespace PirateGame
         /// <summary>
         /// The main loop of the player
         /// </summary>
-        /// <param name="gameTime"></param>
+        /// <param name="gameTime">Takes a GameTime that provides the timespan since last call to update</param>
         public override void Update(GameTime gameTime)
         {
             HandleInput();
