@@ -16,9 +16,9 @@ namespace PirateGame
         private Player player = new Player(new Vector2(GameWorld.Width / 2, GameWorld.Height / 2));
         public static int Height { get; set; }
         public static int Width { get; set; }
-       
+        // List of positions and type of tile
         private Dictionary<Vector2, int> tiles;
-        // 
+        // Texture used for tiles
         private Texture2D textureAtlas;
         // Matrix used to move camera with player
         private Matrix _translation;
@@ -129,7 +129,10 @@ namespace PirateGame
             }
             return result;
         }
-
+        /// <summary>
+        /// Adds tiles to list of gameobjects
+        /// </summary>
+        /// <param name="ground"></param>
         private void AddTiles(Dictionary<Vector2, int> ground)
         {
             foreach (var item in ground)
@@ -150,6 +153,10 @@ namespace PirateGame
                 gameObjects.Add(new WorldTile(textureAtlas, destinationRectange, source));
             }
         }
+        /// <summary>
+        /// Calculates matrix to determine camera position
+        /// </summary>
+        /// <param name="vector"></param>
         private void CalculateCamera(Vector2 vector)
         {
             var dx = (GameWorld.Width / 2) - vector.X;

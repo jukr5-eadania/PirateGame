@@ -25,7 +25,7 @@ namespace PirateGame
         protected float scale = 1;
 
         // Properties
-        public Rectangle collisionBox
+        public virtual Rectangle collisionBox
         {
             get
             {
